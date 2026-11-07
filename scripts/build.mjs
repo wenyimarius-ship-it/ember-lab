@@ -10,7 +10,7 @@ let html = template.replace('<!-- FEATURED -->', renderFeatured(experiments.find
   .replace('<!-- EXPERIMENTS -->', experiments.map(renderCard).join('\n'))
   .replaceAll('<!-- COUNT -->', String(experiments.length))
   .replace('<!-- YEAR -->', String(new Date().getUTCFullYear()))
-  .replace('<!-- INDEX PROJECTS -->', experiments.map(item => `<a href="#experiment-${item.id}" data-project-id="${item.id}">${escapeHTML(item.title)}</a>`).join(''));
+  .replace('<!-- INDEX PROJECTS -->', experiments.map(item => `<a href="${escapeHTML(item.url || `#experiment-${item.id}`)}" data-project-id="${item.id}">${escapeHTML(item.title)}</a>`).join(''));
 html = localizeHTML(html, experiments);
 // Use the current Vercel deployment host, or an explicitly configured canonical origin.
 const configuredOrigin = process.env.SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);

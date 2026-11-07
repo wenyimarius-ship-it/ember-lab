@@ -7,11 +7,10 @@ export const experiments = [
     description: '将文化知识转化为可讨论、可分享的内容，通过 AI 辅助生成、文化背景解释、事实核验提示与受众反馈完成创作闭环。',
     category: ['AI', 'Culture', 'Content'],
     status: 'existing',
-    url: null,
+    url: 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/',
     preview: 'bridge',
     tags: ['AI 辅助创作', '文化语境', '反馈闭环'],
     featured: true,
-    connectionNote: '待接入 · 原型地址尚待验证',
   },
   {
     id: 'idea-puzzle',

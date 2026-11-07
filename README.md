@@ -65,3 +65,7 @@ ember-lab/
 `INDEX` 打开原生模态索引，支持 Esc、关闭按钮、点击遮罩、Tab 焦点约束和关闭后焦点恢复。索引列出章节、联系、Spaces、主站及全部实验；定位被筛掉的实验时自动恢复全部卡片。邮箱沿用主站已公开的 `wenyi.marius@gmail.com`。
 
 共享界面翻译在 `scripts/localize.mjs`，每个实验的英文介绍在 `experiments.js` 的 `descriptionEn`。新增或修改中文文案时同步维护翻译；构建会预渲染中文并将双语文本安全转义为数据属性，不在浏览器中解析翻译 HTML。
+
+## 当前站点入口
+
+CultureBridge 已接入官方仓库记录、用户确认可用的 Streamlit 地址。主站、Lab、CultureBridge 的规范入口与托管证据见 [docs/site-addresses.md](docs/site-addresses.md)。INDEX、Featured 与卡片共用 experiments.js 的同一 URL；其他三个作品仍为开发中且不生成访问链接。

@@ -23,8 +23,12 @@ with sync_playwright() as p:
         for heading in page.locator('.featured-copy h3, .card-body h3').all():
             assert heading.evaluate('(el)=>el.scrollWidth <= el.clientWidth + 1'), f'Clipped title at {width}'
         page.screenshot(path=str(OUT / f'lab-{width}.png'), full_page=True)
-        # Unavailable projects are informational cards, never dead anchors.
-        assert page.locator('.experiment-card a, .featured-card a').count() == 0
+        # CultureBridge is linked; the three unreleased projects have no launch links.
+        launches = page.locator('.experiment-card a, .featured-card a')
+        assert launches.count() == 2
+        for link in launches.all():
+            assert link.get_attribute('href') == 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/'
+        assert page.locator('.experiment-card[data-status="in-development"] a').count() == 0
         page.locator('[data-filter="in-development"]').click()
         assert page.locator('.experiment-card:visible').count() == 3
         page.locator('[data-filter="existing"]').click()

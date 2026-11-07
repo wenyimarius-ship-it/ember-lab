@@ -25,6 +25,6 @@
 主站 `PROJECT_CONTEXT.md` 及首页真实外链记录：
 `https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/`
 
-本轮检查该 URL 时，环境代理返回 CONNECT 403，未取得应用响应；不能据此判断应用在线或失效。因此 `url: null`、状态 `existing`，显示“待接入 · 原型地址尚待验证”。未来在能访问该站的环境检查实际内容与核心流程后再填入 URL；不要仅凭主页旧记录就标为 Live。
+初始阶段该 URL 被环境代理 CONNECT 403 拦截，曾显示待接入。2026-11-07 用户确认可用后，已只读核实 CultureBridge 官方仓库 README 与部署说明，并接入同一个 Streamlit 地址。Lab Featured、项目卡片、INDEX 和主站原型入口统一使用该 URL。本环境仍无法独立验证远端运行情况；证据与托管归属见 [site-addresses.md](site-addresses.md)。
 
 GitHub 页脚仓库地址使用现有 origin，已用只读 Git 操作确认访问成功。未来三个独立仓库名来自用户规划，未把它们作为已上线应用链接。

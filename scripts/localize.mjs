@@ -137,6 +137,7 @@ for (const pair of pairs)
 export function localizeHTML(html, experiments) {
   const copy = new Map(dictionary);
   for (const item of experiments) {
+    copy.set('体验 ' + item.title, ['体验 ' + item.title, 'Open ' + item.title]);
     if (item.descriptionEn)
       copy.set(item.description, [item.description, item.descriptionEn]);
     const caption = "CONCEPT STUDY / " + item.id.toUpperCase();
