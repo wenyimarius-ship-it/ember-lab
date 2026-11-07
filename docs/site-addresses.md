@@ -22,3 +22,9 @@ CultureBridge 仓库：`wenyimarius-ship-it/culturebridge`，本轮只读检查�
 本轮开始时 GitHub Lab `main` 仍为初始提交 `2462c60`；完整导航修复 `149e8e4` 只在 `fix/lab-navigation-i18n`（PR #1）。本次 CultureBridge 接入追加到同一分支，合并一次即可同时交付导航与链接。主站 Spaces 修复已在 `main` 的合并提交 `e92c3a2` 中。
 
 本地构建、分支推送、PR 合并与 Production 部署是不同状态。只有 Lab 修复进入实际生产分支，并且对应 Vercel Production 部署完成，线上才会显示新导航。本轮没有绕过 PR 直接修改默认分支或触发生产发布。
+
+## Idea Puzzle 上线接入
+
+用户提供并确认已实际访问的 Vercel Production 地址为 https://ember-idea-puzzle.vercel.app 。Lab 的 `experiments.js` 将该项目标记为 `live`，卡片与 INDEX 共用此地址。不是猜测地址或临时预览地址。
+
+本环境对该域名及 lab.mariustang.com 的 HTTPS 请求被网络代理 CONNECT 403 拦截，无法独立复验线上资源，也无法确认最新 Lab Production 部署状态。构建与本地浏览器验证不等于线上部署已完成；浏览器点击测试拦截外部响应，只证明链接的真实点击导航目标正确。其他项目状态、链接、页面结构和样式不变。

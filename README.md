@@ -68,4 +68,4 @@ ember-lab/
 
 ## 当前站点入口
 
-CultureBridge 已接入官方仓库记录、用户确认可用的 Streamlit 地址。主站、Lab、CultureBridge 的规范入口与托管证据见 [docs/site-addresses.md](docs/site-addresses.md)。INDEX、Featured 与卡片共用 experiments.js 的同一 URL；其他三个作品仍为开发中且不生成访问链接。
+CultureBridge 已接入官方仓库记录、用户确认可用的 Streamlit 地址。主站、Lab、CultureBridge 的规范入口与托管证据见 [docs/site-addresses.md](docs/site-addresses.md)。INDEX、Featured 与卡片共用 experiments.js 的同一 URL；Idea Puzzle 已接入用户确认的 Vercel Production 地址 https://ember-idea-puzzle.vercel.app ，状态为 Live；Cinema Experiment 和 City Observation Desk 仍为开发中且不生成访问链接。

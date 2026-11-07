@@ -96,3 +96,12 @@ test('Idea Puzzle is live and all Lab entry points use its confirmed Production 
   assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
   assert.match(renderCard(item, 1), /status-live/);
 });
+
+test('other projects keep their release states and links', () => {
+  for (const id of ['cinema-experiment', 'city-observation']) {
+    const item = experiments.find(item => item.id === id);
+    assert.equal(item.status, 'in-development');
+    assert.equal(item.url, null);
+  }
+  assert.equal(experiments.find(item => item.id === 'culturebridge').status, 'existing');
+});

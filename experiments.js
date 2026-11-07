@@ -14,10 +14,10 @@ export const experiments = [
   },
   {
     id: 'idea-puzzle',
-    descriptionEn: 'Give scattered ideas a place to connect. Planned features include idea cards, drag-and-drop organization, grouping, next-action choices, and local saving.',
+    descriptionEn: 'Give scattered ideas a place to connect with idea cards, drag-and-drop organization, grouping, next-action choices, and local saving.',
     title: 'Idea Puzzle',
     subtitle: '想法拼图',
-    description: '让零散想法找到彼此的位置。计划支持想法卡片、拖拽整理、分组、行动选择与本地保存。',
+    description: '让零散想法找到彼此的位置。通过想法卡片、拖拽整理、主题分组与本地保存，将一个想法转化为下一步行动。',
     category: ['Creativity', 'Interaction'],
     status: 'live',
     url: 'https://ember-idea-puzzle.vercel.app',
