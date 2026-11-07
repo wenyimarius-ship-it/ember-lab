@@ -32,3 +32,12 @@
 - experiments.js 写入同一真实 URL，Featured、卡片和 INDEX 共用配置，移除待接入；主站现有原型链接已相同。三个未上线实验仍无链接。
 - 主站 main 已合并入口修复（e92c3a2）；Lab main 仍为 2462c60，双语导航 PR #1 未进入 main。本次更新追加到该 PR 的原分支，不创建第二套导航修复。
 - 新增 docs/site-addresses.md 记录规范入口、托管证据和验证限制。未修改 CultureBridge 源码、服务器、Secrets、DNS 或生产部署。
+
+## 2026-11-08：紧凑作品目录草稿（审阅分支）
+
+- 分支 feat/lab-entry-navigation，从 main 的 4131461 创建；用户要求先提供本地可点击对照，停在可审阅状态，不推送 main 或部署。
+- 首页改为 Cinema / City / Puzzle / CultureBridge 四张整卡链接：名称、一句实际玩法、箭头，当前标签页打开。原有长介绍移到 /about/，可直接回目录；四作品的正式 URL、状态和独立源码均不变。
+- 新增本地 /review/ 对照改动前完整快照与目录版；快照及离线导出在忽略目录 .review，比较路由不进入 dist。
+- 16 项 Node 测试、四种宽度 Lab 浏览器检查通过。390/1440px 使用三独立作品实际源码快照走通返回回路，未用假页面替代应用。Cinema 未改片库、问题或推荐流程。
+- 源码显示 Cinema 和 City 首页已有 Lab 返回链接；Puzzle 没有，使用浏览器 Back；City 深层页逐级返回。CultureBridge app.py/i18n.py 未发现 Lab 返回链接，远端未能核实。
+- 所有生产域名仍被代理 CONNECT 403 阻断，未声称完成线上实际回路或实机测试。完整路径、源码 SHA、跨仓库待办和截图在 docs/navigation-review.md。

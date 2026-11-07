@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { experiments } from '../experiments.js';
-import { validateExperiments, renderCard } from '../scripts/render.mjs';
+import { validateExperiments, renderCard, renderDirectory } from '../scripts/render.mjs';
 
 test('project catalog has four distinct projects and CultureBridge featured', () => {
   validateExperiments(experiments);
@@ -51,7 +51,10 @@ test('new catalog entries render with generic artwork fallback', () => {
 test('built HTML includes all content and metadata without needing client rendering', async () => {
   await import('../scripts/build.mjs');
   const html = await readFile('dist/index.html', 'utf8');
-  assert.equal((html.match(/class="experiment-card"/g) || []).length, 4);
+  assert.equal((html.match(/class="directory-card"/g) || []).length, 4);
+  const notes = await readFile('dist/about/index.html', 'utf8');
+  assert.equal((notes.match(/class="experiment-card"/g) || []).length, 4);
+  assert.doesNotMatch(html, /<!-- DIRECTORY -->/);
   for (const marker of ['<!-- FEATURED -->', '<!-- EXPERIMENTS -->', '<!-- COUNT -->', '<!-- YEAR -->']) assert.ok(!html.includes(marker));
   for (const item of experiments) assert.ok(html.includes(item.title));
   assert.match(html, /property="og:image"/);
@@ -65,6 +68,8 @@ test('deployment build writes canonical and absolute sharing image from deployme
   const html = await readFile('dist/index.html', 'utf8');
   assert.match(html, /rel="canonical" href="https:\/\/lab.example.com\/"/);
   assert.match(html, /property="og:image" content="https:\/\/lab.example.com\/assets\/og.png"/);
+  const notes = await readFile('dist/about/index.html', 'utf8');
+  assert.match(notes, /rel="canonical" href="https:\/\/lab.example.com\/about\/"/);
   execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: '', VERCEL_URL: '' } });
 });
 
@@ -82,7 +87,9 @@ test('CultureBridge uses the documented Streamlit URL consistently across launch
   const item = experiments.find(item => item.id === 'culturebridge');
   assert.equal(item.url, 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/');
   const html = await readFile('dist/index.html', 'utf8');
-  assert.equal(html.split(`href="${item.url}"`).length - 1, 3);
+  assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
+  const notes = await readFile('dist/about/index.html', 'utf8');
+  assert.equal(notes.split(`href="${item.url}"`).length - 1, 3);
   assert.doesNotMatch(html, /待接入 · 原型地址尚待验证/);
 });
 
@@ -126,4 +133,23 @@ test('Cinema Experiment is live and card and index use its Production URL', asyn
   const html = await readFile('dist/index.html', 'utf8');
   assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
   assert.match(renderCard(item, 2), /status-live/);
+});
+
+
+test('compact directory links whole cards in the current tab and separates long notes', async () => {
+  const html = renderDirectory(experiments);
+  const order = [...html.matchAll(/data-project-id="([^"]+)"/g)].map(match => match[1]);
+  assert.deepEqual(order, ['cinema-experiment', 'city-observation', 'idea-puzzle', 'culturebridge']);
+  assert.equal((html.match(/<a /g) || []).length, 4);
+  assert.doesNotMatch(html, /target=|<button|class="tags"/);
+  const output = await readFile('dist/index.html', 'utf8');
+  assert.doesNotMatch(output, /featured-card|experiment-grid|href="#experiments"|href="#about"/);
+  assert.match(output, /href="\/about\/"/);
+  for (const item of experiments) assert.ok(output.includes(item.entryDescription));
+});
+
+test('future unreleased works render no dead directory links', () => {
+  const html = renderDirectory([{ ...experiments[0], status: 'planned', url: null }]);
+  assert.match(html, /<article class="directory-card is-unavailable"/);
+  assert.doesNotMatch(html, /<a |href=/);
 });

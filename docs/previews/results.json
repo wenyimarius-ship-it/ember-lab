@@ -1,0 +1,42 @@
+{
+  "scope": "Local Lab build; external destinations not loaded",
+  "viewports": [
+    {
+      "width": 320,
+      "directory": "passed",
+      "first_two_entries_above_fold": true,
+      "languages": "passed",
+      "keyboard_index": "passed",
+      "notes_roundtrip": "passed",
+      "js_errors": []
+    },
+    {
+      "width": 390,
+      "directory": "passed",
+      "first_two_entries_above_fold": true,
+      "languages": "passed",
+      "keyboard_index": "passed",
+      "notes_roundtrip": "passed",
+      "js_errors": []
+    },
+    {
+      "width": 700,
+      "directory": "passed",
+      "first_two_entries_above_fold": true,
+      "languages": "passed",
+      "keyboard_index": "passed",
+      "notes_roundtrip": "passed",
+      "js_errors": []
+    },
+    {
+      "width": 1440,
+      "directory": "passed",
+      "first_two_entries_above_fold": true,
+      "languages": "passed",
+      "keyboard_index": "passed",
+      "notes_roundtrip": "passed",
+      "js_errors": []
+    }
+  ],
+  "without_javascript": "passed"
+}
