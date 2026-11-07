@@ -8,11 +8,11 @@ test('project catalog has four distinct projects and CultureBridge featured', ()
   validateExperiments(experiments);
   assert.equal(experiments.length, 4);
   assert.equal(experiments.find(item => item.featured).id, 'culturebridge');
-  assert.equal(experiments.filter(item => item.status === 'in-development').length, 3);
+  assert.equal(experiments.filter(item => item.status === 'in-development').length, 2);
 });
 test('unverified and unreleased projects never render launch links', () => {
   for (const [i, item] of experiments.entries()) {
-    if (item.id === 'culturebridge') continue;
+    if (['live', 'existing'].includes(item.status)) continue;
     assert.equal(item.url, null);
     assert.doesNotMatch(renderCard(item, i), /<a\b/);
   }
@@ -85,4 +85,14 @@ test('CultureBridge uses the documented Streamlit URL consistently across launch
   const html = await readFile('dist/index.html', 'utf8');
   assert.equal(html.split(`href="${item.url}"`).length - 1, 3);
   assert.doesNotMatch(html, /待接入 · 原型地址尚待验证/);
+});
+
+
+test('Idea Puzzle is live and all Lab entry points use its confirmed Production URL', async () => {
+  const item = experiments.find(item => item.id === 'idea-puzzle');
+  assert.equal(item.status, 'live');
+  assert.equal(item.url, 'https://ember-idea-puzzle.vercel.app');
+  const html = await readFile('dist/index.html', 'utf8');
+  assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
+  assert.match(renderCard(item, 1), /status-live/);
 });

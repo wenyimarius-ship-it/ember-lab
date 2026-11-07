@@ -23,17 +23,30 @@ with sync_playwright() as p:
         for heading in page.locator('.featured-copy h3, .card-body h3').all():
             assert heading.evaluate('(el)=>el.scrollWidth <= el.clientWidth + 1'), f'Clipped title at {width}'
         page.screenshot(path=str(OUT / f'lab-{width}.png'), full_page=True)
-        # CultureBridge is linked; the three unreleased projects have no launch links.
+        # CultureBridge and Idea Puzzle are linked; two projects remain unreleased.
         launches = page.locator('.experiment-card a, .featured-card a')
-        assert launches.count() == 2
+        assert launches.count() == 3
         for link in launches.all():
-            assert link.get_attribute('href') == 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/'
+            assert link.get_attribute('href') in ['https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/', 'https://ember-idea-puzzle.vercel.app']
         assert page.locator('.experiment-card[data-status="in-development"] a').count() == 0
         page.locator('[data-filter="in-development"]').click()
-        assert page.locator('.experiment-card:visible').count() == 3
+        assert page.locator('.experiment-card:visible').count() == 2
         page.locator('[data-filter="existing"]').click()
         assert page.locator('.experiment-card:visible').count() == 1
-        for status in ['live', 'planned']:
+        page.locator('[data-filter="live"]').click()
+        assert page.locator('.experiment-card:visible').count() == 1
+        assert page.locator('#experiment-idea-puzzle').is_visible()
+        page.locator('[data-filter="all"]').click()
+        # Exercise the real anchor and verify its popup navigation target. The
+        # destination is intercepted; remote availability is checked separately.
+        page.context.route('https://ember-idea-puzzle.vercel.app/', lambda route: route.fulfill(status=200, body='Idea Puzzle destination check'))
+        with page.expect_popup() as popup_info:
+            page.locator('#experiment-idea-puzzle a.text-link').click()
+        popup = popup_info.value
+        popup.wait_for_url('https://ember-idea-puzzle.vercel.app/')
+        assert popup.evaluate("window.opener === null") # noopener protects the Lab tab
+        popup.close()
+        for status in ['planned']:
             page.locator(f'[data-filter="{status}"]').click()
             assert page.locator('.experiment-card:visible').count() == 0
             assert page.locator('.empty-state').is_visible()
@@ -57,8 +70,8 @@ with sync_playwright() as p:
         page.locator('#language').click()
         assert page.locator('html').get_attribute('lang') == 'en'
         assert page.locator('.featured-copy .description').inner_text().startswith('Turning cultural knowledge')
-        assert page.locator('.experiment-card:visible').count() == 3
-        assert 'Showing 3 of 4' in page.locator('#filter-result').inner_text()
+        assert page.locator('.experiment-card:visible').count() == 2
+        assert 'Showing 2 of 4' in page.locator('#filter-result').inner_text()
         assert not page.evaluate('document.documentElement.scrollWidth > innerWidth')
         page.screenshot(path=str(OUT / f'lab-en-{width}.png'), full_page=True)
         page.reload()
@@ -73,8 +86,8 @@ with sync_playwright() as p:
         assert page.locator('#index-open').evaluate('(el)=>el===document.activeElement')
         page.locator('[data-filter="existing"]').click()
         page.locator('#index-open').click()
-        page.locator('.index-projects [data-project-id="idea-puzzle"]').click()
-        assert page.locator('#experiment-idea-puzzle').is_visible()
+        page.locator('.index-projects [data-project-id="cinema-experiment"]').click()
+        assert page.locator('#experiment-cinema-experiment').is_visible()
         assert page.locator('.experiment-card:visible').count() == 4
         assert not page.locator('#site-index').is_visible()
         assert page.locator('a[href="mailto:wenyi.marius@gmail.com"]').count() == 1
