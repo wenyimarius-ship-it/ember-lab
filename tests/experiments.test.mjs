@@ -8,11 +8,10 @@ test('project catalog has four distinct projects and CultureBridge featured', ()
   validateExperiments(experiments);
   assert.equal(experiments.length, 4);
   assert.equal(experiments.find(item => item.featured).id, 'culturebridge');
-  assert.equal(experiments.filter(item => item.status === 'in-development').length, 1);
+  assert.equal(experiments.filter(item => item.status === 'in-development').length, 0);
 });
 test('unverified and unreleased projects never render launch links', () => {
-  for (const [i, item] of experiments.entries()) {
-    if (['live', 'existing'].includes(item.status)) continue;
+  for (const [i, item] of ['in-development', 'planned'].map(status => ({ ...experiments[2], status, url: null })).entries()) {
     assert.equal(item.url, null);
     assert.doesNotMatch(renderCard(item, i), /<a\b/);
   }
@@ -43,7 +42,7 @@ test('project text is escaped instead of interpreted as HTML', () => {
   assert.match(card, /&lt;script&gt;/);
 });
 test('new catalog entries render with generic artwork fallback', () => {
-  const item = { ...experiments[1], id: 'next-experiment', preview: 'custom', status: 'planned' };
+  const item = { ...experiments[1], id: 'next-experiment', preview: 'custom', status: 'planned', url: null };
   const html = renderCard(item, 4);
   assert.match(html, /art-generic/);
   assert.match(html, /Planned/);
@@ -98,12 +97,15 @@ test('Idea Puzzle is live and all Lab entry points use its confirmed Production 
 });
 
 test('other projects keep their release states and links', () => {
-  for (const id of ['cinema-experiment']) {
+  const expected = {
+    'culturebridge': ['existing', 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/'],
+    'idea-puzzle': ['live', 'https://ember-idea-puzzle.vercel.app'],
+    'city-observation': ['live', 'https://ember-city-observer.vercel.app'],
+  };
+  for (const [id, state] of Object.entries(expected)) {
     const item = experiments.find(item => item.id === id);
-    assert.equal(item.status, 'in-development');
-    assert.equal(item.url, null);
+    assert.deepEqual([item.status, item.url], state);
   }
-  assert.equal(experiments.find(item => item.id === 'culturebridge').status, 'existing');
 });
 
 
@@ -114,4 +116,14 @@ test('City Observation Desk is live and both entry points use its Production URL
   const html = await readFile('dist/index.html', 'utf8');
   assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
   assert.match(renderCard(item, 3), /status-live/);
+});
+
+
+test('Cinema Experiment is live and card and index use its Production URL', async () => {
+  const item = experiments.find(item => item.id === 'cinema-experiment');
+  assert.equal(item.status, 'live');
+  assert.equal(item.url, 'https://ember-film-experiment.vercel.app');
+  const html = await readFile('dist/index.html', 'utf8');
+  assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
+  assert.match(renderCard(item, 2), /status-live/);
 });

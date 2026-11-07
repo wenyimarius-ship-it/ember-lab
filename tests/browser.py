@@ -23,24 +23,26 @@ with sync_playwright() as p:
         for heading in page.locator('.featured-copy h3, .card-body h3').all():
             assert heading.evaluate('(el)=>el.scrollWidth <= el.clientWidth + 1'), f'Clipped title at {width}'
         page.screenshot(path=str(OUT / f'lab-{width}.png'), full_page=True)
-        # CultureBridge, Idea Puzzle and City are linked; Cinema remains unreleased.
+        # All three Vercel experiments and the existing CultureBridge have real links.
         launches = page.locator('.experiment-card a, .featured-card a')
-        assert launches.count() == 4
+        assert launches.count() == 5
         for link in launches.all():
-            assert link.get_attribute('href') in ['https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/', 'https://ember-idea-puzzle.vercel.app', 'https://ember-city-observer.vercel.app']
+            assert link.get_attribute('href') in ['https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/', 'https://ember-idea-puzzle.vercel.app', 'https://ember-city-observer.vercel.app', 'https://ember-film-experiment.vercel.app']
         assert page.locator('.experiment-card[data-status="in-development"] a').count() == 0
         page.locator('[data-filter="in-development"]').click()
-        assert page.locator('.experiment-card:visible').count() == 1
+        assert page.locator('.experiment-card:visible').count() == 0
+        assert page.locator('.empty-state').is_visible()
         page.locator('[data-filter="existing"]').click()
         assert page.locator('.experiment-card:visible').count() == 1
         page.locator('[data-filter="live"]').click()
-        assert page.locator('.experiment-card:visible').count() == 2
+        assert page.locator('.experiment-card:visible').count() == 3
+        assert page.locator('#experiment-cinema-experiment').is_visible()
         assert page.locator('#experiment-city-observation').is_visible()
         assert page.locator('#experiment-idea-puzzle').is_visible()
         page.locator('[data-filter="all"]').click()
         # Exercise the real anchor and verify its popup navigation target. The
         # destination is intercepted; remote availability is checked separately.
-        for project, destination in [('idea-puzzle', 'https://ember-idea-puzzle.vercel.app/'), ('city-observation', 'https://ember-city-observer.vercel.app/')]:
+        for project, destination in [('idea-puzzle', 'https://ember-idea-puzzle.vercel.app/'), ('city-observation', 'https://ember-city-observer.vercel.app/'), ('cinema-experiment', 'https://ember-film-experiment.vercel.app/')]:
             page.context.route(destination, lambda route: route.fulfill(status=200, body='Production destination check'))
             with page.expect_popup() as popup_info:
                 page.locator(f'#experiment-{project} a.text-link').click()
@@ -72,8 +74,8 @@ with sync_playwright() as p:
         page.locator('#language').click()
         assert page.locator('html').get_attribute('lang') == 'en'
         assert page.locator('.featured-copy .description').inner_text().startswith('Turning cultural knowledge')
-        assert page.locator('.experiment-card:visible').count() == 1
-        assert 'Showing 1 of 4' in page.locator('#filter-result').inner_text()
+        assert page.locator('.experiment-card:visible').count() == 0
+        assert 'Showing 0 of 4' in page.locator('#filter-result').inner_text()
         assert not page.evaluate('document.documentElement.scrollWidth > innerWidth')
         page.screenshot(path=str(OUT / f'lab-en-{width}.png'), full_page=True)
         page.reload()
@@ -86,9 +88,10 @@ with sync_playwright() as p:
         page.keyboard.press('Escape')
         assert not page.locator('#site-index').is_visible()
         assert page.locator('#index-open').evaluate('(el)=>el===document.activeElement')
-        page.locator('[data-filter="existing"]').click()
+        page.locator('[data-filter="all"]').click()
         page.locator('#index-open').click()
-        page.locator('.index-projects [data-project-id="cinema-experiment"]').click()
+        assert page.locator('.index-projects [data-project-id="cinema-experiment"]').get_attribute('href') == 'https://ember-film-experiment.vercel.app'
+        page.locator('.index-links a[href="#experiments"]').click()
         assert page.locator('#experiment-cinema-experiment').is_visible()
         assert page.locator('.experiment-card:visible').count() == 4
         assert not page.locator('#site-index').is_visible()
