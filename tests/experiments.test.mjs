@@ -8,7 +8,7 @@ test('project catalog has four distinct projects and CultureBridge featured', ()
   validateExperiments(experiments);
   assert.equal(experiments.length, 4);
   assert.equal(experiments.find(item => item.featured).id, 'culturebridge');
-  assert.equal(experiments.filter(item => item.status === 'in-development').length, 2);
+  assert.equal(experiments.filter(item => item.status === 'in-development').length, 1);
 });
 test('unverified and unreleased projects never render launch links', () => {
   for (const [i, item] of experiments.entries()) {
@@ -98,10 +98,20 @@ test('Idea Puzzle is live and all Lab entry points use its confirmed Production 
 });
 
 test('other projects keep their release states and links', () => {
-  for (const id of ['cinema-experiment', 'city-observation']) {
+  for (const id of ['cinema-experiment']) {
     const item = experiments.find(item => item.id === id);
     assert.equal(item.status, 'in-development');
     assert.equal(item.url, null);
   }
   assert.equal(experiments.find(item => item.id === 'culturebridge').status, 'existing');
+});
+
+
+test('City Observation Desk is live and both entry points use its Production URL', async () => {
+  const item = experiments.find(item => item.id === 'city-observation');
+  assert.equal(item.status, 'live');
+  assert.equal(item.url, 'https://ember-city-observer.vercel.app');
+  const html = await readFile('dist/index.html', 'utf8');
+  assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
+  assert.match(renderCard(item, 3), /status-live/);
 });
