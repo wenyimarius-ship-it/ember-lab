@@ -1,0 +1,12 @@
+/* Current homepage tokens, shared without restructuring its layered CSS. */
+:root {
+  --bg: #111322;
+  --ink: #f3f2ee;
+  --muted: #b3b3c4;
+  --line: #3d4054;
+  --accent: #d0fc88;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --ember-lilac: #c3b1ff;
+}

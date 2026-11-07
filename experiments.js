@@ -1,0 +1,58 @@
+// Only set url after verifying the deployed application. No placeholder links.
+export const experiments = [
+  {
+    id: 'culturebridge',
+    title: 'CultureBridge',
+    description: '将文化知识转化为可讨论、可分享的内容，通过 AI 辅助生成、文化背景解释、事实核验提示与受众反馈完成创作闭环。',
+    category: ['AI', 'Culture', 'Content'],
+    status: 'existing',
+    url: null,
+    preview: 'bridge',
+    tags: ['AI 辅助创作', '文化语境', '反馈闭环'],
+    featured: true,
+    connectionNote: '待接入 · 原型地址尚待验证',
+  },
+  {
+    id: 'idea-puzzle',
+    title: 'Idea Puzzle',
+    subtitle: '想法拼图',
+    description: '让零散想法找到彼此的位置。计划支持想法卡片、拖拽整理、分组、行动选择与本地保存。',
+    category: ['Creativity', 'Interaction'],
+    status: 'in-development',
+    url: null,
+    preview: 'puzzle',
+    tags: ['想法卡片', '拖拽分组', '本地保存'],
+    repository: 'wenyimarius-ship-it/ember-idea-puzzle',
+  },
+  {
+    id: 'cinema-experiment',
+    title: 'Cinema Experiment',
+    subtitle: '电影选择实验',
+    description: '从此刻的情境出发，找到今晚想看的故事。计划支持情境选择、电影推荐与推荐理由。',
+    category: ['Film', 'Decision', 'Interaction'],
+    status: 'in-development',
+    url: null,
+    preview: 'cinema',
+    tags: ['情境选择', '电影推荐', '推荐理由'],
+    repository: 'wenyimarius-ship-it/ember-film-experiment',
+  },
+  {
+    id: 'city-observation',
+    title: 'City Observation Desk',
+    subtitle: '城市观察对照台',
+    description: '把一次走访，变成可以对照的观察。计划比较商场或街区的动线、选品、氛围与个人观察，生成观察卡。',
+    category: ['City', 'Observation', 'Comparison'],
+    status: 'in-development',
+    url: null,
+    preview: 'city',
+    tags: ['空间对照', '个人观察', '观察卡'],
+    repository: 'wenyimarius-ship-it/ember-city-observer',
+  },
+];
+
+export const statuses = {
+  live: 'Live',
+  existing: 'Existing Project',
+  'in-development': 'In Development',
+  planned: 'Planned',
+};
