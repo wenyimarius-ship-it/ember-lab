@@ -2,11 +2,15 @@ import { readFile, writeFile, mkdir, rm, cp } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { localizeHTML } from './localize.mjs';
 import { experiments } from '../experiments.js';
-import { validateExperiments, renderCard, renderFeatured, escapeHTML } from './render.mjs';
+import { validateExperiments, renderCard, renderFeatured, escapeHTML, availability } from './render.mjs';
 process.chdir(fileURLToPath(new URL('..', import.meta.url)));
 validateExperiments(experiments);
 const template = await readFile('index.html', 'utf8');
-let html = template.replace('<!-- FEATURED -->', renderFeatured(experiments.find(item => item.featured)))
+const city = experiments.find(item => item.id === 'city-observation');
+const playNow = city && availability(city) === 'live'
+  ? `<a class="primary" href="${escapeHTML(city.url)}">试玩城市观察台 <span aria-hidden="true">↗</span></a>`
+  : '';
+let html = template.replace('<!-- PLAY NOW -->', playNow).replace('<!-- FEATURED -->', renderFeatured(experiments.find(item => item.featured)))
   .replace('<!-- EXPERIMENTS -->', experiments.map(renderCard).join('\n'))
   .replaceAll('<!-- COUNT -->', String(experiments.length))
   .replace('<!-- YEAR -->', String(new Date().getUTCFullYear()))
