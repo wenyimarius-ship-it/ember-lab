@@ -30,15 +30,22 @@ function artwork(item, featured) {
   }[kind];
   return `<div class="art art-${kind}${featured ? ' art-featured' : ''}" aria-hidden="true">${inner}<span class="art-caption">${featured ? 'CULTURE → CONVERSATION' : 'CONCEPT STUDY / ' + escapeHTML(item.id.toUpperCase())}</span></div>`;
 }
+export function availability(item) {
+  return item.url && ['live', 'existing'].includes(item.status) ? 'live' : 'in-development';
+}
+function badge(item) {
+  const state = availability(item);
+  return `<span class="status status-${state}">${state === 'live' ? '能玩' : '制作中'}</span>`;
+}
 function action(item) {
-  return item.url && ['live', 'existing'].includes(item.status)
+  return availability(item) === 'live'
     ? `<a class="text-link" href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer">体验 ${escapeHTML(item.title)} <span aria-hidden="true">↗</span><span class="sr-only">（新窗口打开）</span></a>`
-    : `<p class="unavailable">${escapeHTML(item.connectionNote || (item.status === 'planned' ? '正在规划 · 尚未上线' : '开发中 · 尚未上线'))}<span aria-hidden="true">↗</span></p>`;
+    : `<p class="unavailable">${escapeHTML(item.connectionNote || '制作中')}<span aria-hidden="true">↗</span></p>`;
 }
 export function renderCard(item, index) {
-  return `<article id="experiment-${item.id}" class="experiment-card" data-status="${escapeHTML(item.status)}" aria-labelledby="title-${item.id}">
+  return `<article id="experiment-${item.id}" class="experiment-card" data-status="${availability(item)}" aria-labelledby="title-${item.id}">
     ${artwork(item, false)}
-    <div class="card-body"><div class="card-meta"><span class="mono">${String(index + 1).padStart(2, '0')} / EXPERIMENT</span><span class="status status-${item.status}">${statuses[item.status]}</span></div>
+    <div class="card-body"><div class="card-meta"><span class="mono">${String(index + 1).padStart(2, '0')} / EXPERIMENT</span>${badge(item)}</div>
     <p class="category mono">${item.category.map(escapeHTML).join(' / ')}</p>
     <h3 id="title-${item.id}">${escapeHTML(item.title)}</h3>${item.subtitle ? `<p class="subtitle">${escapeHTML(item.subtitle)}</p>` : ''}
     <p class="description">${escapeHTML(item.description)}</p>
@@ -46,5 +53,5 @@ export function renderCard(item, index) {
     ${action(item)}</div></article>`;
 }
 export function renderFeatured(item) {
-  return `<article class="featured-card" aria-labelledby="featured-title"><div class="featured-copy"><span class="status status-${item.status}">${statuses[item.status]}</span><p class="category mono">${item.category.map(escapeHTML).join(' / ')}</p><h3 id="featured-title">${escapeHTML(item.title)}<span>.</span></h3><p class="description">${escapeHTML(item.description)}</p><ol class="workflow"><li><span>01</span>生成</li><li><span>02</span>核验</li><li><span>03</span>反馈</li></ol>${action(item)}</div>${artwork(item, true)}</article>`;
+  return `<article class="featured-card" aria-labelledby="featured-title"><div class="featured-copy">${badge(item)}<p class="category mono">${item.category.map(escapeHTML).join(' / ')}</p><h3 id="featured-title">${escapeHTML(item.title)}<span>.</span></h3><p class="description">${escapeHTML(item.description)}</p><ol class="workflow"><li><span>01</span>生成</li><li><span>02</span>核验</li><li><span>03</span>反馈</li></ol>${action(item)}</div>${artwork(item, true)}</article>`;
 }
