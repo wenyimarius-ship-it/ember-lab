@@ -53,8 +53,11 @@ function setLanguage(next, updateURL = false) {
   languageButton
     .querySelector('[lang="zh-CN"]')
     .classList.toggle("selected-language", next === "zh");
-  document.title =
-    next === "en"
+  document.title = location.pathname.startsWith("/about")
+    ? next === "en"
+      ? "Project notes · Ember Lab"
+      : "作品介绍 · Ember Lab"
+    : next === "en"
       ? "Ember Lab · Interactive experiments & creative tools"
       : "Ember Lab · 交互实验与创意工具";
   document.querySelector('meta[name="description"]').content =
@@ -69,20 +72,31 @@ function setLanguage(next, updateURL = false) {
     else url.searchParams.delete("lang");
     history.replaceState(null, "", url);
   }
+  // Carry the chosen language across directory / project-note navigation.
+  for (const link of document.querySelectorAll('a[href]')) {
+    const href = link.getAttribute('href');
+    if (!/^(\/|(?:directory|notes)\.html)/.test(href)) continue;
+    const target = new URL(href, location.href);
+    if (target.origin !== location.origin) continue;
+    if (next === 'en') target.searchParams.set('lang', 'en');
+    else target.searchParams.delete('lang');
+    const path = href.startsWith('/') ? target.pathname : target.pathname.split('/').pop();
+    link.setAttribute('href', path + target.search + target.hash);
+  }
   announceCount();
 }
-filters.hidden = false;
+if (filters) filters.hidden = false;
 languageButton.hidden = false;
 indexButton.hidden = false;
 setLanguage(language);
 languageButton.addEventListener("click", () =>
   setLanguage(language === "zh" ? "en" : "zh", true),
 );
-filters.addEventListener("click", (event) => {
+filters?.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-filter]");
   if (button) filterProjects(button.dataset.filter);
 });
-document.querySelector("#reset-filter").addEventListener("click", () => {
+document.querySelector("#reset-filter")?.addEventListener("click", () => {
   filterProjects("all");
   filters.querySelector('[data-filter="all"]').focus();
 });
@@ -126,3 +140,22 @@ index.querySelectorAll('a[href^="#"]').forEach((link) =>
     target.scrollIntoView({ block: "start" });
   }),
 );
+// Keep keyboard cycling in the index, including the last link → close button.
+index.addEventListener("keydown", (event) => {
+  if (event.key !== "Tab") return;
+  const controls = [
+    ...index.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex="0"]',
+    ),
+  ].filter((element) => element.getClientRects().length > 0);
+  if (!controls.length) return;
+  const first = controls[0];
+  const last = controls[controls.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+});

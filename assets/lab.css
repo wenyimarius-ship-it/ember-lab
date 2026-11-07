@@ -1310,3 +1310,170 @@ html[lang="en"] .about-section h2 {
     font-size: 22px;
   }
 }
+
+/* Directory-first homepage. Detailed descriptions live on /about/. */
+.directory-main {
+  padding-top: 104px;
+  padding-bottom: 16px;
+}
+.directory-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 32px;
+  margin: 18px 0 28px;
+}
+.directory-heading h1 {
+  font-size: clamp(38px, 4vw, 58px);
+  letter-spacing: -2px;
+  margin: 0;
+}
+.directory-heading p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.directory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.directory-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px;
+  grid-template-rows: auto 1fr;
+  align-items: start;
+  gap: 14px 18px;
+  min-height: 180px;
+  padding: 30px;
+  background: #1a1c2c;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.directory-card h3 {
+  font: 400 clamp(24px, 2.4vw, 36px)/1.2 var(--serif);
+  letter-spacing: -0.5px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.directory-card p {
+  grid-column: 1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 40em;
+}
+.directory-card .entry-arrow {
+  grid-row: 1 / 3;
+  grid-column: 2;
+  align-self: center;
+  font: 28px/1 var(--sans);
+  color: var(--accent);
+}
+.directory-card:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+  background: #202337;
+}
+.directory-card:focus-visible {
+  outline-offset: 4px;
+}
+.directory-card.is-unavailable {
+  opacity: 0.65;
+}
+.directory-return {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 22px 0 0;
+}
+.directory-footer {
+  font: 10px/1.8 var(--mono);
+  color: var(--muted);
+  padding-top: 18px;
+  padding-bottom: 24px;
+}
+.directory-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.directory-footer nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.lab-navigation [aria-current="page"] {
+  color: var(--accent);
+}
+.notes-heading {
+  padding-top: 36px;
+}
+.notes-heading h1 {
+  font-size: clamp(32px, 4vw, 56px);
+  letter-spacing: -1px;
+}
+.notes-heading p {
+  color: var(--muted);
+}
+.notes-heading .text-link {
+  display: inline-flex;
+}
+@media (max-width: 950px) {
+  .directory-main {
+    padding-top: 122px;
+  }
+}
+@media (max-width: 700px) {
+  .directory-heading {
+    display: block;
+    margin: 0 0 20px;
+  }
+  .directory-heading h1 {
+    font-size: 42px;
+  }
+  .directory-heading p {
+    font-size: 13px;
+    margin-top: 6px;
+  }
+  .directory-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .directory-card {
+    min-height: 112px;
+    gap: 8px 14px;
+    padding: 18px;
+    grid-template-columns: minmax(0, 1fr) 22px;
+  }
+  .directory-card h3 {
+    font-size: 25px;
+    line-height: 1.15;
+  }
+  .directory-card p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .directory-card .entry-arrow {
+    font-size: 24px;
+  }
+  .directory-return {
+    font-size: 11px;
+    margin-top: 16px;
+  }
+  .directory-footer {
+    gap: 4px;
+    padding-top: 12px;
+    padding-bottom: 16px;
+  }
+  .directory-footer nav {
+    gap: 24px;
+  }
+}
+@media (max-width: 360px) {
+  .directory-card h3 {
+    font-size: 23px;
+  }
+}

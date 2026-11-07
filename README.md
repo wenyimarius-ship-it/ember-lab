@@ -1,71 +1,75 @@
 # Ember Lab
 
-Ember 的独立交互实验室。当前是作品集合与导航网站，不包含三个未来实验的功能，也不重新实现 CultureBridge。
+Ember 的独立作品目录。首页让访客直接进入 Cinema、City、Puzzle 和 CultureBridge；作品保持独立站点、独立源码与现有玩法。详细介绍位于 `/about/`。
 
-零运行时依赖，使用原生 HTML/CSS/JavaScript；Node.js 22+ 只用于构建和本地服务。无需数据库、登录、API 密钥、外部字体或第三方脚本。
+零运行时依赖，原生 HTML/CSS/JavaScript。Node.js 22+ 仅用于构建与本地服务；无需数据库、账号、密钥、外部字体或第三方脚本。
 
-## 本地运行
-
-```sh
-cd /workspace/ember-lab # 其他机器进入实际克隆目录
-npm run dev
-```
-
-服务默认使用 4173 端口，`PORT=8080 npm run dev` 可改端口。`dev`/`start` 在启动时构建一次；修改源码后重启服务，或另一个终端运行 `npm run build` 刷新产物。没有自动热更新。
+## 运行与审阅
 
 ```sh
-npm run build # 生成可独立托管的 dist/
-npm test      # Node 内置测试，无需 npm install
+npm run dev       # 本地端口默认 4173，启动时构建一次
+npm run build     # 生成可独立部署的 dist/
+npm test          # Node 内置测试
 ```
 
-可选浏览器验证（开发工具，不是应用依赖）：安装 Python Playwright 并提供 `/usr/bin/chromium`，先启动本地服务，再运行 `python tests/browser.py`。截图和报告默认存于 `/tmp/ember-lab-checks`，可用 `LAB_TEST_OUTPUT` 修改。该检查同时从 `assets/og.svg` 导出 `assets/og.png`；修改 OG 源图后重跑并构建。已提交的 PNG 不需要在部署时重生成。
+修改后运行 `npm run build` 或重启 dev，没有自动热更新。
 
-## 目录
+本轮目录草稿与旧首页的本地对照：
+
+```sh
+PORT=4174 npm run review
+# 开发服务的 /review/ 是并排可点击对照；/ 为目录版；/about/ 为介绍。
+```
+
+`npm run review` 从已存在的历史提交生成 `.review/current`，本地比较路由不进入生产 `dist/`。可运行 `node scripts/export-preview.mjs` 生成 `.review/preview` 的自包含对照文件，供普通本地 HTTP 服务使用。
+
+本轮入口、源码快照回路、手机截图、生产访问限制与跨仓库待办见 [docs/navigation-review.md](docs/navigation-review.md)。
+
+## 结构
 
 ```text
-ember-lab/
-├── index.html                 # 页面模板、语义结构、SEO
-├── experiments.js             # 唯一项目数据入口
-├── assets/
-│   ├── ember-tokens.css        # 主站共享 token 原样副本
-│   ├── lab.css                 # Lab 布局、组件、响应式
-│   ├── lab.js                  # 可选状态筛选增强
-│   ├── favicon.svg             # 临时字母 e 标识
-│   └── og.svg / og.png         # 本地分享图源文件及导出图
-├── scripts/
-│   ├── render.mjs              # 数据校验、卡片及 Featured 生成
-│   ├── build.mjs               # 构建静态页面
-│   └── serve.mjs               # 本地 HTTP 服务
-├── tests/                     # 配置/构建测试和浏览器检查
-├── docs/
-│   ├── design.md               # 主站规范对应、素材与链接证据
-│   ├── ember-design-system-source.md
-│   ├── deployment.md           # Vercel、DNS、后续接入
-│   └── validation.md           # 本轮验证记录
-├── vercel.json
-└── dist/                      # 生成目录，不提交
+index.html                     紧凑目录模板
+pages/project-notes.html        独立作品介绍模板
+experiments.js                 统一项目配置、正式 URL、简短玩法和顺序
+assets/                        Ember tokens、样式、语言/INDEX 增强、favicon/OG
+scripts/render.mjs             安全渲染目录及介绍卡片
+scripts/localize.mjs           界面双语文本
+scripts/build.mjs              构建两个静态页面
+scripts/serve.mjs               本地 HTTP 服务及仅本地的比较路由
+scripts/prepare-review.mjs      改动前的可重现快照
+scripts/export-preview.mjs      自包含比较文件导出
+scripts/review.html             仅本地的比较界面
+tests/                         Node、Lab 浏览器、跨站源码快照导航检查
+docs/                          设计来源、部署步骤、导航审阅和截图
+vercel.json                    独立静态部署配置
+dist/                          生成产物，不提交
+.review/                       本地审阅产物，不提交
 ```
 
-## 管理项目
+## 项目配置
 
-编辑 `experiments.js`，每项包含 `id / title / description / category / status / url / preview / tags`。`category`、`tags` 是数组；`url` 为 `null` 或验证后的 HTTPS 地址。`subtitle`、`connectionNote`、`repository` 可选。保持一个项目 `featured: true`。
+每项至少有 `id / title / description / category / status / url / preview / tags`；状态为 `live`、`existing`、`in-development` 或 `planned`。只有 live/existing 且有真实 HTTPS 地址时生成可点击入口，开发中项目 URL 必须为空；构建会拒绝不安全地址、重复 ID、无 URL 的 Live 和不支持的状态。
 
-状态值：`live`、`existing`、`in-development`、`planned`，界面显示 Live、Existing Project、In Development、Planned。仅 `live`/`existing` 且 URL 非空时生成访问链接；开发中或规划中项目不得填 URL。Live 缺 URL、重复 id、不安全地址或未知状态会使构建失败。
+目录用 `entryDescription`、`entryDescriptionEn` 保存一句具体玩法，用 `entryOrder` 决定顺序；新增项目只需追加配置。介绍页继续使用 description、descriptionEn、tags 和概念视觉；它们不是产品截图。`featured: true` 保持且仅保持一个项目。
 
-`preview` 是概念视觉键，不是伪造截图。已有 `bridge / puzzle / cinema / city`，新键使用通用视觉。新增配置项会自动加入网格、数量和对应状态筛选，不用改首页组件。若未来使用真实截图，应另扩展渲染器并添加图片替代文字。
+首页每张卡是单个语义化链接，**当前标签页**进入独立作品；在独立作品内返回，或使用浏览器返回。Lab 无法跨域给独立应用注入返回导航。当前源码中 Cinema 和 City 首页有返回，Puzzle 需要浏览器返回；跨仓库改动应独立审阅。
 
-本地不收集访客数据，不用 cookies 或浏览器存储。筛选只影响当前页面，不发送网络请求。禁用 JS 时仍展示完整项目和导航。
+默认中文，`EN / 中` 整页切换；英文选择保留在 URL 的 `?lang=en`，不使用 cookies 或 localStorage。INDEX 支持键盘循环、Esc、关闭和焦点恢复。关闭 JS 时目录仍可点击、中文仍可读。访客输入不发送给外部服务。
 
-部署和接入步骤见 [docs/deployment.md](docs/deployment.md)，设计来源见 [docs/design.md](docs/design.md)。本轮未推送 GitHub、未部署 Vercel、未绑定正式域名。
+## 浏览器检查
 
-## 中文、English 与完整索引
+需要 Python Playwright 和系统 `/usr/bin/chromium`（开发工具，不是应用依赖）：
 
-首页默认中文；右上角 `EN / 中` 切换整页文案（含项目介绍、状态、筛选提示和无障碍名称）。选择写入当前网址的 `?lang=en`，刷新和分享会保留英文；不使用 cookies 或本地存储。关闭 JavaScript 时仍能阅读中文静态内容。
+```sh
+LAB_TEST_URL=http://127.0.0.1:4174 python tests/browser.py
+```
 
-`INDEX` 打开原生模态索引，支持 Esc、关闭按钮、点击遮罩、Tab 焦点约束和关闭后焦点恢复。索引列出章节、联系、Spaces、主站及全部实验；定位被筛掉的实验时自动恢复全部卡片。邮箱沿用主站已公开的 `wenyi.marius@gmail.com`。
+源码快照回路是可选审阅辅助，不属于普通构建前置条件。准备 cinema/city/puzzle 的只读 checkout 后，先在 puzzle 执行 `npm ci`、`npm run build`，再运行：
 
-共享界面翻译在 `scripts/localize.mjs`，每个实验的英文介绍在 `experiments.js` 的 `descriptionEn`。新增或修改中文文案时同步维护翻译；构建会预渲染中文并将双语文本安全转义为数据属性，不在浏览器中解析翻译 HTML。
+```sh
+LAB_AUDIT_SOURCES=/tmp/ember-nav-audit LAB_TEST_URL=http://127.0.0.1:4174 python tests/navigation_audit.py
+```
 
-## 当前站点入口
+此检查加载真实源码文件，但不代表 Production 版本、TLS 或网络已经验证，详见审阅记录。
 
-CultureBridge 已接入官方仓库记录、用户确认可用的 Streamlit 地址。主站、Lab、CultureBridge 的规范入口与托管证据见 [docs/site-addresses.md](docs/site-addresses.md)。INDEX、Featured 与卡片共用 experiments.js 的同一 URL；Idea Puzzle 已接入用户确认的 Vercel Production 地址 https://ember-idea-puzzle.vercel.app ，状态为 Live；Cinema Experiment 和 City Observation Desk 仍为开发中且不生成访问链接。
+独立 Vercel 配置与未来域名操作说明见 [docs/deployment.md](docs/deployment.md)；设计来源见 [docs/design.md](docs/design.md)。本轮只做本地审阅，不部署、不改 DNS 或其他仓库。

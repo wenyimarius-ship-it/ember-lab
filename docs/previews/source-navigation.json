@@ -1,0 +1,34 @@
+{
+  "production_test": false,
+  "reason": "Environment proxy denies live origins with CONNECT 403",
+  "source_revisions": {
+    "cinema": "805d2b19319747c91b62e09766f1991c4701022c",
+    "city": "d7ac9bd2cc6e84088f82d29b39f1e52c38484428",
+    "puzzle": "a521819733ef9eed91a494966ba8a1deb22e41f4"
+  },
+  "checks": [
+    {
+      "width": 390,
+      "mode": "actual read-only source snapshots; responses served locally",
+      "paths": [
+        "directory \u2192 cinema-experiment \u2192 in-app return \u2192 directory",
+        "directory \u2192 city-observation \u2192 in-app return \u2192 directory",
+        "directory \u2192 idea-puzzle \u2192 browser Back \u2192 directory \u2192 cinema-experiment",
+        "city desk \u2192 record \u2192 city home \u2192 Lab directory (indirect return)"
+      ],
+      "js_errors": []
+    },
+    {
+      "width": 1440,
+      "mode": "actual read-only source snapshots; responses served locally",
+      "paths": [
+        "directory \u2192 cinema-experiment \u2192 in-app return \u2192 directory",
+        "directory \u2192 city-observation \u2192 in-app return \u2192 directory",
+        "directory \u2192 idea-puzzle \u2192 browser Back \u2192 directory \u2192 cinema-experiment",
+        "city desk \u2192 record \u2192 city home \u2192 Lab directory (indirect return)"
+      ],
+      "js_errors": []
+    }
+  ],
+  "culturebridge": "Live Streamlit server unavailable; no local server or synthetic stand-in used"
+}

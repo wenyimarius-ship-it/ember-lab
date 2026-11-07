@@ -2,6 +2,30 @@ import { escapeHTML } from "./render.mjs";
 
 // Each pair is [Chinese, English]. Shared brand and project names stay unchanged.
 const pairs = [
+  ["作品目录", "Work directory"],
+  ["作品介绍", "Project notes"],
+  ["关于 Lab", "About Lab"],
+  ["页脚导航", "Footer navigation"],
+  ["选一件作品，直接开始。", "Pick an experiment. Start exploring."],
+  [
+    "作品在当前标签页打开；可通过作品内的返回入口或浏览器返回，回到这里换一件。",
+    "Experiments open in this tab. Use their return link or your browser’s Back button to come here and try another.",
+  ],
+  [
+    "了解每件作品，或返回目录直接开始。",
+    "Read about each work, or return to the directory to start.",
+  ],
+  ["返回作品目录", "Back to the directory"],
+  ["尚未上线", "Not released"],
+  [
+    "各作品独立维护；这里记录玩法与入口。",
+    "Each work is maintained independently. Find its details and entry here.",
+  ],
+  [
+    "卡片视觉为概念示意。点击进入当前已接入的独立作品。",
+    "Card visuals are concept studies. Open a connected independent experiment to try it.",
+  ],
+
   ["04 / 联系", "04 / CONTACT"],
   ["语境", "CONTEXT"],
   ["连接", "CONNECTION"],
@@ -137,7 +161,15 @@ for (const pair of pairs)
 export function localizeHTML(html, experiments) {
   const copy = new Map(dictionary);
   for (const item of experiments) {
-    copy.set('体验 ' + item.title, ['体验 ' + item.title, 'Open ' + item.title]);
+    if (item.entryDescription && item.entryDescriptionEn)
+      copy.set(item.entryDescription, [
+        item.entryDescription,
+        item.entryDescriptionEn,
+      ]);
+    copy.set("体验 " + item.title, [
+      "体验 " + item.title,
+      "Open " + item.title,
+    ]);
     if (item.descriptionEn)
       copy.set(item.description, [item.description, item.descriptionEn]);
     const caption = "CONCEPT STUDY / " + item.id.toUpperCase();
