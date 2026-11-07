@@ -25,20 +25,20 @@ with sync_playwright() as p:
         page.screenshot(path=str(OUT / f'lab-{width}.png'), full_page=True)
         # Unavailable projects are informational cards, never dead anchors.
         assert page.locator('.experiment-card a, .featured-card a').count() == 0
-        page.get_by_role('button', name='开发中', exact=True).click()
+        page.locator('[data-filter="in-development"]').click()
         assert page.locator('.experiment-card:visible').count() == 3
-        page.get_by_role('button', name='已有项目', exact=True).click()
+        page.locator('[data-filter="existing"]').click()
         assert page.locator('.experiment-card:visible').count() == 1
-        for status in ['Live', 'Planned']:
-            page.get_by_role('button', name=status, exact=True).click()
+        for status in ['live', 'planned']:
+            page.locator(f'[data-filter="{status}"]').click()
             assert page.locator('.experiment-card:visible').count() == 0
             assert page.locator('.empty-state').is_visible()
             page.locator('#reset-filter').click()
             assert page.locator('.experiment-card:visible').count() == 4
-        page.locator('nav a[href="#about"]').click()
+        page.locator('.lab-navigation a[href="#about"]').click()
         page.wait_for_timeout(1200)
         assert page.evaluate("document.querySelector('#about').getBoundingClientRect().top >= 80")
-        page.locator('nav a[href="#experiments"]').click()
+        page.locator('.lab-navigation a[href="#experiments"]').click()
         page.wait_for_timeout(1200)
         assert page.evaluate("document.querySelector('#experiments').getBoundingClientRect().top >= 80")
         # All same-origin resources and anchor targets resolve.
@@ -48,6 +48,33 @@ with sync_playwright() as p:
         for url in page.evaluate('performance.getEntriesByType("resource").map(r=>r.name)'):
             assert url.startswith(BASE), f'Unexpected external request: {url}'
             assert page.request.get(url).status == 200
+        # Both languages fit, update complete project copy, and retain filter state.
+        page.locator('[data-filter="in-development"]').click()
+        page.locator('#language').click()
+        assert page.locator('html').get_attribute('lang') == 'en'
+        assert page.locator('.featured-copy .description').inner_text().startswith('Turning cultural knowledge')
+        assert page.locator('.experiment-card:visible').count() == 3
+        assert 'Showing 3 of 4' in page.locator('#filter-result').inner_text()
+        assert not page.evaluate('document.documentElement.scrollWidth > innerWidth')
+        page.screenshot(path=str(OUT / f'lab-en-{width}.png'), full_page=True)
+        page.reload()
+        assert page.locator('html').get_attribute('lang') == 'en'
+        page.locator('#language').click()
+        assert page.locator('html').get_attribute('lang') == 'zh-CN'
+        page.locator('#index-open').click()
+        assert page.locator('#site-index').is_visible()
+        assert page.locator('#index-open').get_attribute('aria-expanded') == 'true'
+        page.keyboard.press('Escape')
+        assert not page.locator('#site-index').is_visible()
+        assert page.locator('#index-open').evaluate('(el)=>el===document.activeElement')
+        page.locator('[data-filter="existing"]').click()
+        page.locator('#index-open').click()
+        page.locator('.index-projects [data-project-id="idea-puzzle"]').click()
+        assert page.locator('#experiment-idea-puzzle').is_visible()
+        assert page.locator('.experiment-card:visible').count() == 4
+        assert not page.locator('#site-index').is_visible()
+        assert page.locator('a[href="mailto:wenyi.marius@gmail.com"]').count() == 1
+        assert page.locator('.lab-navigation a[href="https://www.mariustang.com/spaces/"]').count() == 1
         assert not errors, errors
         results.append({'width': width, 'overflow': overflow, 'filters': 'passed', 'anchors': 'passed', 'js_errors': errors})
         page.close()
@@ -74,8 +101,8 @@ with sync_playwright() as p:
     # Export a real 1200×630 PNG for social crawlers; SVG remains editable source.
     page = browser.new_page(viewport={'width': 1200, 'height': 630}, device_scale_factor=1)
     page.goto(BASE + '/assets/og.svg')
-    page.screenshot(path=str(Path('assets/og.png').resolve()))
+    assert page.locator('svg').is_visible()
     browser.close()
-    report = {'viewports': results, 'keyboard': 'passed', 'reduced_motion': 'passed', 'without_javascript': 'passed', 'og_export': '1200x630 PNG'}
+    report = {'viewports': results, 'keyboard': 'passed', 'reduced_motion': 'passed', 'without_javascript': 'passed', 'og_export': '1200x630 PNG', 'language_switch': 'passed', 'index_dialog': 'passed', 'contact': 'passed'}
     (OUT / 'results.json').write_text(json.dumps(report, indent=2))
     print(json.dumps(report, indent=2))

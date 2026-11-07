@@ -67,3 +67,12 @@ test('deployment build writes canonical and absolute sharing image from deployme
   assert.match(html, /property="og:image" content="https:\/\/lab.example.com\/assets\/og.png"/);
   execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: '', VERCEL_URL: '' } });
 });
+
+test('localization pre-renders Chinese and escapes translation text', async () => {
+  const { localizeHTML } = await import('../scripts/localize.mjs');
+  const html = localizeHTML('<head><title>Live</title></head><body><p>Live</p><p>测试描述</p></body>', [{ description: '测试描述', descriptionEn: '<script>unsafe</script>', id: 'test', title: 'Test' }]);
+  assert.match(html, /<head><title>Live<\/title><\/head>/);
+  assert.match(html, />已上线<\/span>/);
+  assert.doesNotMatch(html, /<script>/);
+  assert.match(html, /&lt;script&gt;/);
+});

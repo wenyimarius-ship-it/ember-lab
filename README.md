@@ -57,3 +57,11 @@ ember-lab/
 本地不收集访客数据，不用 cookies 或浏览器存储。筛选只影响当前页面，不发送网络请求。禁用 JS 时仍展示完整项目和导航。
 
 部署和接入步骤见 [docs/deployment.md](docs/deployment.md)，设计来源见 [docs/design.md](docs/design.md)。本轮未推送 GitHub、未部署 Vercel、未绑定正式域名。
+
+## 中文、English 与完整索引
+
+首页默认中文；右上角 `EN / 中` 切换整页文案（含项目介绍、状态、筛选提示和无障碍名称）。选择写入当前网址的 `?lang=en`，刷新和分享会保留英文；不使用 cookies 或本地存储。关闭 JavaScript 时仍能阅读中文静态内容。
+
+`INDEX` 打开原生模态索引，支持 Esc、关闭按钮、点击遮罩、Tab 焦点约束和关闭后焦点恢复。索引列出章节、联系、Spaces、主站及全部实验；定位被筛掉的实验时自动恢复全部卡片。邮箱沿用主站已公开的 `wenyi.marius@gmail.com`。
+
+共享界面翻译在 `scripts/localize.mjs`，每个实验的英文介绍在 `experiments.js` 的 `descriptionEn`。新增或修改中文文案时同步维护翻译；构建会预渲染中文并将双语文本安全转义为数据属性，不在浏览器中解析翻译 HTML。
