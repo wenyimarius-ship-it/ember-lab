@@ -12,12 +12,13 @@ test('project catalog has four distinct projects and CultureBridge featured', ()
 });
 test('unverified and unreleased projects never render launch links', () => {
   for (const [i, item] of experiments.entries()) {
+    if (item.id === 'culturebridge') continue;
     assert.equal(item.url, null);
     assert.doesNotMatch(renderCard(item, i), /<a\b/);
   }
 });
 test('live project requires URL; HTTPS and released status required for navigation', () => {
-  for (const change of [{ status: 'live' }, { url: 'javascript:alert(1)' }, { url: 'https://example.com', status: 'planned' }, { url: 'https://user:pass@example.com' }]) {
+  for (const change of [{ status: 'live', url: null }, { url: 'javascript:alert(1)' }, { url: 'https://example.com', status: 'planned' }, { url: 'https://user:pass@example.com' }]) {
     const items = structuredClone(experiments);
     Object.assign(items[0], change);
     assert.throws(() => validateExperiments(items));
@@ -66,4 +67,22 @@ test('deployment build writes canonical and absolute sharing image from deployme
   assert.match(html, /rel="canonical" href="https:\/\/lab.example.com\/"/);
   assert.match(html, /property="og:image" content="https:\/\/lab.example.com\/assets\/og.png"/);
   execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: '', VERCEL_URL: '' } });
+});
+
+test('localization pre-renders Chinese and escapes translation text', async () => {
+  const { localizeHTML } = await import('../scripts/localize.mjs');
+  const html = localizeHTML('<head><title>Live</title></head><body><p>Live</p><p>测试描述</p></body>', [{ description: '测试描述', descriptionEn: '<script>unsafe</script>', id: 'test', title: 'Test' }]);
+  assert.match(html, /<head><title>Live<\/title><\/head>/);
+  assert.match(html, />已上线<\/span>/);
+  assert.doesNotMatch(html, /<script>/);
+  assert.match(html, /&lt;script&gt;/);
+});
+
+
+test('CultureBridge uses the documented Streamlit URL consistently across launch points', async () => {
+  const item = experiments.find(item => item.id === 'culturebridge');
+  assert.equal(item.url, 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/');
+  const html = await readFile('dist/index.html', 'utf8');
+  assert.equal(html.split(`href="${item.url}"`).length - 1, 3);
+  assert.doesNotMatch(html, /待接入 · 原型地址尚待验证/);
 });

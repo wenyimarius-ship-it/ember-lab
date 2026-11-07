@@ -36,7 +36,7 @@ function action(item) {
     : `<p class="unavailable">${escapeHTML(item.connectionNote || (item.status === 'planned' ? '正在规划 · 尚未上线' : '开发中 · 尚未上线'))}<span aria-hidden="true">↗</span></p>`;
 }
 export function renderCard(item, index) {
-  return `<article class="experiment-card" data-status="${escapeHTML(item.status)}" aria-labelledby="title-${item.id}">
+  return `<article id="experiment-${item.id}" class="experiment-card" data-status="${escapeHTML(item.status)}" aria-labelledby="title-${item.id}">
     ${artwork(item, false)}
     <div class="card-body"><div class="card-meta"><span class="mono">${String(index + 1).padStart(2, '0')} / EXPERIMENT</span><span class="status status-${item.status}">${statuses[item.status]}</span></div>
     <p class="category mono">${item.category.map(escapeHTML).join(' / ')}</p>

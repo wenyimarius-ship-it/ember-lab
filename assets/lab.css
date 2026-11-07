@@ -361,7 +361,7 @@ h1 em {
   margin: 0 0 20px;
   font-size: 12px;
 }
-.workflow span {
+.workflow > li > span:not([data-zh]) {
   font: 9px var(--mono);
   color: var(--ember-lilac);
   margin-right: 7px;
@@ -641,7 +641,7 @@ h1 em {
   border-color: var(--line);
   color: var(--ink);
 }
-.filters button span {
+.filters button > span:not([data-zh]) {
   margin-left: 8px;
   font: 9px var(--mono);
 }
@@ -748,7 +748,7 @@ h1 em {
   letter-spacing: -1.5px;
   margin: 18px 0;
 }
-.about-section h2 > span {
+.about-section h2 > span:not([data-zh]) {
   color: var(--ember-lilac);
 }
 .about-copy {
@@ -1096,4 +1096,217 @@ h3 {
 }
 .topbar .back-link span {
   font-family: var(--mono);
+}
+
+/* Shared Ember navigation: Spaces, work, contact, language, complete index. */
+.topbar .lab-navigation {
+  gap: 22px;
+}
+.quiet {
+  background: none;
+  border: 0;
+  padding: 8px 0;
+  min-height: 44px;
+  font: 11px var(--mono);
+  color: var(--ink);
+}
+.language-toggle {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  white-space: nowrap;
+}
+.language-toggle [lang] {
+  color: var(--muted);
+}
+.language-toggle .selected-language {
+  color: var(--accent);
+}
+.index-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.index-toggle > span {
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+  position: relative;
+}
+.index-toggle > span::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 0;
+  width: 17px;
+  height: 1px;
+  background: var(--accent);
+}
+body.index-open {
+  overflow: hidden;
+}
+#site-index {
+  color: var(--ink);
+  background: #211e34;
+  border: 1px solid var(--line);
+  border-radius: 20px 20px 20px 2px;
+  width: min(720px, calc(100% - 40px));
+  max-height: calc(100dvh - 40px);
+  padding: 32px;
+  overscroll-behavior: contain;
+}
+#site-index::backdrop {
+  background: #080912c9;
+  backdrop-filter: blur(5px);
+}
+.index-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.index-top h2 {
+  margin: 0;
+  color: var(--ember-lilac);
+  font: 28px var(--serif);
+}
+#index-close {
+  font: 32px var(--sans);
+  min-width: 44px;
+}
+.index-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 28px;
+}
+.index-links a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0;
+  min-height: 48px;
+  font-size: 14px;
+}
+#site-index h3 {
+  font-weight: 400;
+  margin: 32px 0 8px;
+}
+.index-note {
+  color: var(--muted);
+  font-size: 12px;
+}
+.index-projects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 24px;
+}
+.index-projects a {
+  min-height: 44px;
+  padding: 10px 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.index-projects a:hover {
+  color: var(--accent);
+}
+.contact-section {
+  border-top: 1px solid var(--line);
+  padding: 36px 0 48px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+}
+.contact-section .mono {
+  color: var(--muted);
+}
+.contact-section h2 {
+  font-size: 24px;
+  font-weight: 400;
+  margin: 10px 0 0;
+}
+.contact-section .text-link {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+[id^="experiment-"],
+#contact {
+  scroll-margin-top: 108px;
+}
+html[lang="en"] .about-section h2 {
+  line-height: 1.4;
+}
+@media (max-width: 950px) {
+  .topbar {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+    height: 104px;
+    padding: 8px 20px;
+    gap: 0;
+  }
+  .topbar .brand {
+    grid-row: 1;
+    grid-column: 1 / 3;
+    min-height: 30px;
+    padding: 0;
+  }
+  .topbar .lab-navigation {
+    display: contents;
+  }
+  .topbar .lab-navigation a {
+    grid-row: 2;
+    min-height: 44px;
+    font-size: 10px;
+    justify-content: center;
+  }
+  .topbar .lab-navigation a:first-child {
+    justify-content: flex-start;
+  }
+  .topbar .language-toggle {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: end;
+    font-size: 10px;
+    gap: 5px;
+  }
+  .topbar .index-toggle {
+    grid-row: 1;
+    grid-column: 4 / 6;
+    justify-self: end;
+    gap: 9px;
+  }
+  .topbar .back-link {
+    border: 0;
+    padding: 0;
+  }
+  main {
+    padding-top: 104px;
+  }
+  html {
+    scroll-padding-top: 128px;
+  }
+  [id^="experiment-"],
+  #contact {
+    scroll-margin-top: 128px;
+  }
+}
+@media (max-width: 400px) {
+  .topbar .lab-navigation {
+    gap: 0 14px;
+  }
+  #site-index {
+    padding: 20px;
+  }
+  .index-links,
+  .index-projects {
+    grid-template-columns: 1fr;
+  }
+  .contact-section h2 {
+    font-size: 22px;
+  }
 }

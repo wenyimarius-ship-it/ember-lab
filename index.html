@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111322">
-  <title>Ember Lab · Interactive experiments & creative tools</title>
+  <title>Ember Lab · 交互实验与创意工具</title>
   <meta name="description" content="Ember 的独立交互实验室：探索 AI、互动叙事、电影与城市观察，将想法转化为可以体验的网页作品。">
   <meta property="og:title" content="Ember Lab · Ideas into experiences">
   <meta property="og:description" content="A collection of interactive experiments, creative tools, and AI-powered explorations.">
@@ -25,18 +25,27 @@
   <a class="skip-link" href="#main">跳到主要内容</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="Ember Lab 首页"><em>Ember</em><span>Lab</span></a>
-    <nav aria-label="主导航">
-      <a href="#experiments" lang="en">Experiments</a>
-      <a href="#about" lang="en">About Lab</a>
-      <a class="back-link" href="https://www.mariustang.com" lang="en">Back to Ember <span aria-hidden="true">↗</span></a>
+    <nav class="lab-navigation" aria-label="主导航">
+      <a href="https://www.mariustang.com/spaces/">Spaces</a>
+      <a href="#experiments">作品</a>
+      <a href="#about">关于</a>
+      <a href="#contact">联系</a>
+      <a class="back-link" href="https://www.mariustang.com">主站 ↗</a>
+      <button id="language" class="quiet language-toggle" type="button" aria-label="切换为英文" hidden><span lang="en">EN</span> / <span lang="zh-CN">中</span></button>
+      <button id="index-open" class="quiet index-toggle" type="button" aria-label="打开完整索引" aria-haspopup="dialog" aria-controls="site-index" aria-expanded="false" hidden>INDEX <span aria-hidden="true"></span></button>
     </nav>
   </header>
+  <dialog id="site-index" aria-labelledby="index-heading">
+    <div class="index-top"><h2 id="index-heading">站点索引</h2><button id="index-close" class="quiet" type="button" aria-label="关闭索引">×</button></div>
+    <nav class="index-links" aria-label="站点索引"><a href="#top">01 / <span>起点</span></a><a href="#featured">02 / <span>精选实验</span></a><a href="#experiments">03 / <span>全部实验</span></a><a href="#about">04 / <span>关于</span></a><a href="#contact">05 / <span>联系</span></a><a href="https://www.mariustang.com/spaces/">06 / Spaces ↗</a><a href="https://www.mariustang.com">07 / <span>主站 ↗</span></a></nav>
+    <h3>实验档案</h3><p class="index-note">已上线的作品可打开体验，其他作品可定位到介绍。</p><nav class="index-projects" aria-label="实验档案"><!-- INDEX PROJECTS --></nav>
+  </dialog>
   <main id="main" class="wrap" tabindex="-1">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-topline mono"><span><i aria-hidden="true"></i> EMBER / INTERACTIVE LAB</span><span>IDEAS INTO EXPERIENCES</span></div>
       <div class="hero-layout">
         <div><h1 id="hero-title" lang="en">Ember <em>Lab</em><span class="title-dot">.</span></h1>
-          <p class="hero-subtitle" lang="en">A collection of interactive experiments,<br class="desktop-break"> creative tools, and AI-powered explorations.</p>
+          <p class="hero-subtitle">A collection of interactive experiments,<br class="desktop-break"> creative tools, and AI-powered explorations.</p>
           <p class="hero-intro">给好奇一个动手的地方。<br>这里收集我的交互作品与 AI 实验，让零散的想法，慢慢成为可以体验的东西。</p>
           <a class="primary" href="#experiments">探索实验 <span aria-hidden="true">↘</span></a>
         </div>
@@ -44,7 +53,7 @@
       </div>
       <div class="hero-bottom mono"><span>AI · CULTURE · EVERYDAY CURIOSITY</span><span><!-- COUNT --> EXPERIMENTS / AN OPEN COLLECTION</span></div>
     </section>
-    <section class="featured-section" aria-labelledby="featured-heading">
+    <section id="featured" class="featured-section" aria-labelledby="featured-heading">
       <div class="section-heading"><h2 id="featured-heading"><span class="section-number mono">01 /</span> Featured Experiment</h2><span class="mono section-aside">从一个问题开始</span></div>
       <!-- FEATURED -->
       <p class="caption">视觉示意 · 展示项目主题与流程，非应用界面或运行截图。</p>
@@ -70,6 +79,7 @@
       <div class="about-copy"><p>Ember Lab 是我的独立交互实验室。在这里，AI、互动叙事、个人观察与网页交互交汇，成为一个个小而具体的产品尝试。</p><p>每个实验从一个问题出发，也保留继续修改的空间。Lab 负责记录与连接；每件作品独立生长，拥有自己的功能、风格和节奏。</p><a class="text-link" href="https://www.mariustang.com">回到 Ember，了解更多 <span aria-hidden="true">↗</span></a></div>
     </section>
   </main>
+  <section id="contact" class="contact-section wrap" aria-labelledby="contact-heading"><div><span class="mono">04 / CONTACT</span><h2 id="contact-heading">写封邮件，聊聊想法。</h2></div><a class="text-link" href="mailto:wenyi.marius@gmail.com">wenyi.marius@gmail.com <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/wenyimarius-ship-it" target="_blank" rel="noopener noreferrer">GitHub ↗<span class="sr-only">（新窗口打开）</span></a></section>
   <footer class="footer wrap"><div><a class="footer-brand" href="#top">Ember Lab</a><p>Stay curious. Make something.</p></div><div class="footer-links"><a href="https://www.mariustang.com">返回主站 ↗</a><a href="https://github.com/wenyimarius-ship-it/ember-lab" target="_blank" rel="noopener noreferrer">GitHub ↗<span class="sr-only">（新窗口打开）</span></a><span>© <!-- YEAR --> Ember</span></div></footer>
 </body>
 </html>

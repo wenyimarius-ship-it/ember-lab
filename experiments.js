@@ -2,18 +2,19 @@
 export const experiments = [
   {
     id: 'culturebridge',
+    descriptionEn: 'Turning cultural knowledge into content people can discuss and share, with AI-assisted drafting, cultural context, fact-checking prompts, and audience feedback.',
     title: 'CultureBridge',
     description: '将文化知识转化为可讨论、可分享的内容，通过 AI 辅助生成、文化背景解释、事实核验提示与受众反馈完成创作闭环。',
     category: ['AI', 'Culture', 'Content'],
     status: 'existing',
-    url: null,
+    url: 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/',
     preview: 'bridge',
     tags: ['AI 辅助创作', '文化语境', '反馈闭环'],
     featured: true,
-    connectionNote: '待接入 · 原型地址尚待验证',
   },
   {
     id: 'idea-puzzle',
+    descriptionEn: 'Give scattered ideas a place to connect. Planned features include idea cards, drag-and-drop organization, grouping, next-action choices, and local saving.',
     title: 'Idea Puzzle',
     subtitle: '想法拼图',
     description: '让零散想法找到彼此的位置。计划支持想法卡片、拖拽整理、分组、行动选择与本地保存。',
@@ -26,6 +27,7 @@ export const experiments = [
   },
   {
     id: 'cinema-experiment',
+    descriptionEn: 'Start with your current situation and find a story for tonight. Planned features include situational choices, film recommendations, and reasons for each recommendation.',
     title: 'Cinema Experiment',
     subtitle: '电影选择实验',
     description: '从此刻的情境出发，找到今晚想看的故事。计划支持情境选择、电影推荐与推荐理由。',
@@ -38,6 +40,7 @@ export const experiments = [
   },
   {
     id: 'city-observation',
+    descriptionEn: 'Turn a visit into observations you can compare. Planned features include comparing routes, retail selection, atmosphere, and personal notes across malls or streets, and generating observation cards.',
     title: 'City Observation Desk',
     subtitle: '城市观察对照台',
     description: '把一次走访，变成可以对照的观察。计划比较商场或街区的动线、选品、氛围与个人观察，生成观察卡。',
