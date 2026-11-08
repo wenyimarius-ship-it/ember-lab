@@ -20,7 +20,7 @@ git push -u origin feat/ember-lab-phase-2
 4. 先使用 Vercel 分配的项目地址验证。检查根页面、favicon、OG PNG、导航、状态筛选、320px 布局、无 JS 页面与不存在路径的 404。不要给卡片补未上线的链接。
 5. 项目确认后选择实际生产分支。此过程只部署 Lab，不连接主站的 Vercel 项目，不改主站域名与重定向。
 
-SEO 的标题、描述及 OG 内容已配置。本地分享图片使用同源 `/assets/og.png`；Vercel 构建时自动读取 `VERCEL_URL` 生成当前部署的绝对 OG 图片地址、og:url 和 canonical。正式域名实际可用后，可在 Lab 项目中设置 `SITE_URL=https://lab.mariustang.com` 并重新部署来覆盖主地址。该变量不是密钥。不要在域名验证完成前设置未上线的地址。
+首页与 `/about/` 构建时使用 `SITE_URL` 作为 canonical、OG 和 Twitter Card 中绝对地址的来源，默认 `https://lab.mariustang.com`。`SITE_URL` 必须为 HTTPS 源地址，且无需配置 Vercel 部署域名变量。分享图随 `dist/assets/og.png` 发布。
 
 ## 未来绑定 lab.mariustang.com（说明，未执行）
 
@@ -28,7 +28,7 @@ SEO 的标题、描述及 OG 内容已配置。本地分享图片使用同源 `/
 2. 在 **Lab 项目** Settings → Domains 添加 `lab.mariustang.com`，记录 Vercel 当时显示的准确 DNS 目标。不要添加或移动 `www.mariustang.com`、根域或其他现有域名。
 3. 在 Porkbun 的权威 DNS 中，针对主机名 `lab` 添加 **CNAME**，目标填 Vercel 提供的准确值（常见为 `cname.vercel-dns.com` 或项目专属目标，以控制台为准），TTL 可用默认值。先检查 `lab` 是否已有 A/AAAA/CNAME；有冲突时停止核实，不盲目删除。若 Vercel 要求域名所有权验证，再按其提供的名称和值添加指定 TXT。
 4. 不修改 nameserver，不开启 Cloudflare 代理，不改现有 A/AAAA、www 记录、重定向或其他 Vercel 域名绑定。
-5. 等待 DNS 生效，核查 Vercel 域名验证与 TLS 证书成功，实际请求 HTTPS 页面及静态资源。设置 `SITE_URL` 为正式 HTTPS 源地址并重新部署，核查 canonical、og:url、og:image 并复验。DNS 生效前不要把规划地址当已上线链接分享。
+5. 等待 DNS 生效，核查 Vercel 域名验证与 TLS 证书成功，实际请求 HTTPS 页面及静态资源。设置 `SITE_URL` 为正式 HTTPS 源地址并重新部署，核查 canonical、og:url、og:image 和 twitter:image 并复验。DNS 生效前不要把规划地址当已上线链接分享。
 
 ## 后续接入三个独立作品
 
