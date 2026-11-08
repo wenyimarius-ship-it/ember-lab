@@ -1,75 +1,35 @@
-# Ember Lab
+# Ember Lab · 交互作品目录
 
-Ember 的独立作品目录。首页让访客直接进入 Cinema、City、Puzzle 和 CultureBridge；作品保持独立站点、独立源码与现有玩法。详细介绍位于 `/about/`。
+Ember Lab 把独立网页实验整理成一个可直接打开的作品目录。[首页](https://lab.mariustang.com/)用于进入作品，[项目介绍](https://lab.mariustang.com/about/)保留玩法背景与概念视觉。个人主站的 Spaces 提供 Lab 入口，Lab 与个人主站分别部署。
 
-零运行时依赖，原生 HTML/CSS/JavaScript。Node.js 22+ 仅用于构建与本地服务；无需数据库、账号、密钥、外部字体或第三方脚本。
+| 作品 | 体验 |
+| --- | --- |
+| [Cinema Experiment](https://cinema.mariustang.com/) | 回答三个情境问题，获得一部电影与推荐理由 |
+| [City Observation Desk](https://city.mariustang.com/) | 试玩两条示意路线，或记录自己的路线 |
+| [Idea Puzzle](https://puzzle.mariustang.com/) | 把想法写成卡片，分组并选出下一步 |
+| [CultureBridge](https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/) | 创作文化短帖、核对语境并收集读者反馈 |
 
-## 运行与审阅
+## 本地构建与验证
 
-```sh
-npm run dev       # 本地端口默认 4173，启动时构建一次
-npm run build     # 生成可独立部署的 dist/
-npm test          # Node 内置测试
-```
-
-修改后运行 `npm run build` 或重启 dev，没有自动热更新。
-
-本轮目录草稿与旧首页的本地对照：
+需要 Node.js 22 或更高版本。Node 负责构建和本地服务，产物是原生 HTML、CSS 和 JavaScript，无应用运行时依赖。
 
 ```sh
-PORT=4174 npm run review
-# 开发服务的 /review/ 是并排可点击对照；/ 为目录版；/about/ 为介绍。
+npm run dev
+npm test
+npm run build
 ```
 
-`npm run review` 从已存在的历史提交生成 `.review/current`，本地比较路由不进入生产 `dist/`。可运行 `node scripts/export-preview.mjs` 生成 `.review/preview` 的自包含对照文件，供普通本地 HTTP 服务使用。
+本地默认端口 4173，`/` 为目录，`/about/` 为作品介绍。开发服务启动时构建一次，修改后重新构建或重启即可。需要与旧首页并排审阅时运行 `npm run review` 并打开 `/review/`。它依赖 Git 历史，只用于本地。浏览器验证及跨站源码快照的准备方法见 [导航审阅记录](docs/navigation-review.md)。
 
-本轮入口、源码快照回路、手机截图、生产访问限制与跨仓库待办见 [docs/navigation-review.md](docs/navigation-review.md)。
+## 如何维护目录
 
-## 结构
+- [experiments.js](experiments.js) 是作品配置。首页使用 `entryDescription`、`entryDescriptionEn` 和 `entryOrder`，介绍页使用长描述、标签及概念视觉。保持恰好一个 `featured: true`。
+- [index.html](index.html) 和 [pages/project-notes.html](pages/project-notes.html) 是模板。[scripts/build.mjs](scripts/build.mjs) 与 [scripts/render.mjs](scripts/render.mjs) 校验配置并生成页面。
+- [assets/](assets/) 包含共享视觉样式、语言和索引交互。[tests/](tests/) 包含构建和浏览器检查。
+- `live`、`existing` 项目只有配置真实 HTTPS 地址时才有外链。开发中和规划项保留介绍。构建检查重复 ID、无效状态及不安全地址。
 
-```text
-index.html                     紧凑目录模板
-pages/project-notes.html        独立作品介绍模板
-experiments.js                 统一项目配置、正式 URL、简短玩法和顺序
-assets/                        Ember tokens、样式、语言/INDEX 增强、favicon/OG
-scripts/render.mjs             安全渲染目录及介绍卡片
-scripts/localize.mjs           界面双语文本
-scripts/build.mjs              构建两个静态页面
-scripts/serve.mjs               本地 HTTP 服务及仅本地的比较路由
-scripts/prepare-review.mjs      改动前的可重现快照
-scripts/export-preview.mjs      自包含比较文件导出
-scripts/review.html             仅本地的比较界面
-tests/                         Node、Lab 浏览器、跨站源码快照导航检查
-docs/                          设计来源、部署步骤、导航审阅和截图
-vercel.json                    独立静态部署配置
-dist/                          生成产物，不提交
-.review/                       本地审阅产物，不提交
-```
+## 部署与边界
 
-## 项目配置
+Vercel 的 `ember-lab` 项目从本仓库 `main` 部署，核对到的 Production 记录为 READY（`acc22e7`）。[vercel.json](vercel.json) 指定 `npm run build`，发布 `dist/`。无需密钥或数据库。可选 `SITE_URL` 接受纯 HTTPS origin，用于 canonical 与分享元数据。未提供时构建可使用 Vercel 提供的 `VERCEL_URL`。
 
-每项至少有 `id / title / description / category / status / url / preview / tags`；状态为 `live`、`existing`、`in-development` 或 `planned`。只有 live/existing 且有真实 HTTPS 地址时生成可点击入口，开发中项目 URL 必须为空；构建会拒绝不安全地址、重复 ID、无 URL 的 Live 和不支持的状态。
-
-目录用 `entryDescription`、`entryDescriptionEn` 保存一句具体玩法，用 `entryOrder` 决定顺序；新增项目只需追加配置。介绍页继续使用 description、descriptionEn、tags 和概念视觉；它们不是产品截图。`featured: true` 保持且仅保持一个项目。
-
-首页每张卡是单个语义化链接，**当前标签页**进入独立作品；在独立作品内返回，或使用浏览器返回。Lab 无法跨域给独立应用注入返回导航。当前源码中 Cinema 和 City 首页有返回，Puzzle 需要浏览器返回；跨仓库改动应独立审阅。
-
-默认中文，`EN / 中` 整页切换；英文选择保留在 URL 的 `?lang=en`，不使用 cookies 或 localStorage。INDEX 支持键盘循环、Esc、关闭和焦点恢复。关闭 JS 时目录仍可点击、中文仍可读。访客输入不发送给外部服务。
-
-## 浏览器检查
-
-需要 Python Playwright 和系统 `/usr/bin/chromium`（开发工具，不是应用依赖）：
-
-```sh
-LAB_TEST_URL=http://127.0.0.1:4174 python tests/browser.py
-```
-
-源码快照回路是可选审阅辅助，不属于普通构建前置条件。准备 cinema/city/puzzle 的只读 checkout 后，先在 puzzle 执行 `npm ci`、`npm run build`，再运行：
-
-```sh
-LAB_AUDIT_SOURCES=/tmp/ember-nav-audit LAB_TEST_URL=http://127.0.0.1:4174 python tests/navigation_audit.py
-```
-
-此检查加载真实源码文件，但不代表 Production 版本、TLS 或网络已经验证，详见审阅记录。
-
-独立 Vercel 配置与未来域名操作说明见 [docs/deployment.md](docs/deployment.md)；设计来源见 [docs/design.md](docs/design.md)。本轮只做本地审阅，不部署、不改 DNS 或其他仓库。
+目录默认中文，英文使用 `?lang=en`，无需 Cookie。关闭 JavaScript 仍能阅读中文并打开作品。卡片在同一标签页进入外部作品，返回链接由各作品维护，或使用浏览器返回。Lab 的 Live 状态来自目录配置，跨站体验与部署版本需分别核对。
