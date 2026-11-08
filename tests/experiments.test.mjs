@@ -59,7 +59,7 @@ test('built HTML includes all content and metadata without needing client render
   for (const item of experiments) assert.ok(html.includes(item.title));
   assert.match(html, /property="og:image"/);
   assert.match(html, /class="skip-link"/);
-  assert.doesNotMatch(html, /href="#"|lab\.mariustang\.com/);
+  assert.doesNotMatch(html, /href="#"|href="(?:home|lab|spaces)\.html/);
 });
 
 test('deployment build writes canonical and absolute sharing image from deployment host', async () => {
@@ -97,7 +97,7 @@ test('CultureBridge uses the documented Streamlit URL consistently across launch
 test('Idea Puzzle is live and all Lab entry points use its confirmed Production URL', async () => {
   const item = experiments.find(item => item.id === 'idea-puzzle');
   assert.equal(item.status, 'live');
-  assert.equal(item.url, 'https://ember-idea-puzzle.vercel.app');
+  assert.equal(item.url, 'https://puzzle.mariustang.com');
   const html = await readFile('dist/index.html', 'utf8');
   assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
   assert.match(renderCard(item, 1), /status-live/);
@@ -106,8 +106,8 @@ test('Idea Puzzle is live and all Lab entry points use its confirmed Production 
 test('other projects keep their release states and links', () => {
   const expected = {
     'culturebridge': ['existing', 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/'],
-    'idea-puzzle': ['live', 'https://ember-idea-puzzle.vercel.app'],
-    'city-observation': ['live', 'https://ember-city-observer.vercel.app'],
+    'idea-puzzle': ['live', 'https://puzzle.mariustang.com'],
+    'city-observation': ['live', 'https://city.mariustang.com'],
   };
   for (const [id, state] of Object.entries(expected)) {
     const item = experiments.find(item => item.id === id);
@@ -119,7 +119,7 @@ test('other projects keep their release states and links', () => {
 test('City Observation Desk is live and both entry points use its Production URL', async () => {
   const item = experiments.find(item => item.id === 'city-observation');
   assert.equal(item.status, 'live');
-  assert.equal(item.url, 'https://ember-city-observer.vercel.app');
+  assert.equal(item.url, 'https://city.mariustang.com');
   const html = await readFile('dist/index.html', 'utf8');
   assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
   assert.match(renderCard(item, 3), /status-live/);
@@ -129,7 +129,7 @@ test('City Observation Desk is live and both entry points use its Production URL
 test('Cinema Experiment is live and card and index use its Production URL', async () => {
   const item = experiments.find(item => item.id === 'cinema-experiment');
   assert.equal(item.status, 'live');
-  assert.equal(item.url, 'https://ember-film-experiment.vercel.app');
+  assert.equal(item.url, 'https://cinema.mariustang.com');
   const html = await readFile('dist/index.html', 'utf8');
   assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
   assert.match(renderCard(item, 2), /status-live/);

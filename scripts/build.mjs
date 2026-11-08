@@ -36,7 +36,7 @@ for (const [source, destination] of templates) {
         )
         .join(""),
     );
-  html = localizeHTML(html, experiments);
+  if (destination !== "index.html") html = localizeHTML(html, experiments);
   pages.push({ destination, html });
 }
 // Use the current Vercel deployment host, or an explicitly configured canonical origin.

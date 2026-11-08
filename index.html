@@ -17,34 +17,39 @@
   <meta property="og:image:alt" content="Ember Lab — Ideas into experiences">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/ember-tokens.css">
-  <link rel="stylesheet" href="/assets/lab.css">
-  <script src="/assets/lab.js" defer></script>
-</head>
+  <link rel="stylesheet" href="assets/ember-lab/css-01.css">
+  <link rel="stylesheet" href="assets/ember-lab/css-02.css">
+
+
+
+<link rel="stylesheet" href="assets/ember-lab/css-03.css"><link rel="stylesheet" href="assets/ember-lab/css-04.css"><link rel="stylesheet" href="assets/ember-lab/css-05.css"></head>
 <body id="top">
-  <a class="skip-link" href="#main">跳到主要内容</a>
+  <a class="skip-link" href="#main"><span data-zh="跳到主要内容" data-en="Skip to main content">跳到主要内容</span></a>
   <header class="topbar">
-    <a class="brand" href="/" aria-label="Ember Lab 首页"><em>Ember</em><span>Lab</span></a>
-    <nav class="lab-navigation" aria-label="主导航">
+    <a class="brand" href="/" aria-label="Ember Lab 首页" data-label-zh="Ember Lab 首页" data-label-en="Ember Lab home"><em>Ember</em><span>Lab</span></a>
+    <nav class="lab-navigation" aria-label="主导航" data-label-zh="主导航" data-label-en="Main navigation">
       <a href="https://www.mariustang.com/spaces/">Spaces</a>
-      <a href="/" aria-current="page">作品目录</a>
-      <a href="/about/">作品介绍</a>
-      <a href="/about/#contact">联系</a>
-      <a class="back-link" href="https://www.mariustang.com">主站 ↗</a>
-      <button id="language" class="quiet language-toggle" type="button" aria-label="切换为英文" hidden><span lang="en">EN</span> / <span lang="zh-CN">中</span></button>
-      <button id="index-open" class="quiet index-toggle" type="button" aria-label="打开完整索引" aria-haspopup="dialog" aria-controls="site-index" aria-expanded="false" hidden>INDEX <span aria-hidden="true"></span></button>
+      <a href="/" aria-current="page"><span data-zh="作品目录" data-en="Work directory">作品目录</span></a>
+      <a href="/about/"><span data-zh="作品介绍" data-en="Project notes">作品介绍</span></a>
+      <a href="/about/#contact"><span data-zh="联系" data-en="Contact">联系</span></a>
+      <a class="back-link" href="https://www.mariustang.com"><span data-zh="主站 ↗" data-en="Ember Home ↗">主站 ↗</span></a>
+      <button id="language" class="quiet language-toggle" type="button" aria-label="切换为英文" data-label-zh="切换为英文" data-label-en="Switch to English" hidden><span lang="en">EN</span> / <span lang="zh-CN">中</span></button>
+      <button id="index-open" class="quiet index-toggle" type="button" aria-label="打开完整索引" data-label-zh="打开完整索引" data-label-en="Open complete index" aria-haspopup="dialog" aria-controls="site-index" aria-expanded="false" hidden>INDEX <span aria-hidden="true"></span></button>
     </nav>
   </header>
   <dialog id="site-index" aria-labelledby="index-heading">
-    <div class="index-top"><h2 id="index-heading">站点索引</h2><button id="index-close" class="quiet" type="button" aria-label="关闭索引">×</button></div>
-    <nav class="index-links" aria-label="站点索引"><a href="/">作品目录</a><a href="/about/">作品介绍</a><a href="/about/#about">关于 Lab</a><a href="/about/#contact">联系</a><a href="https://www.mariustang.com/spaces/">Spaces ↗</a><a href="https://www.mariustang.com">主站 ↗</a></nav>
-    <h3>实验档案</h3><p class="index-note">已上线的作品可打开体验，其他作品可定位到介绍。</p><nav class="index-projects" aria-label="实验档案"><!-- INDEX PROJECTS --></nav>
+    <div class="index-top"><h2 id="index-heading"><span data-zh="站点索引" data-en="Site index">站点索引</span></h2><button id="index-close" class="quiet" type="button" aria-label="关闭索引" data-label-zh="关闭索引" data-label-en="Close index">×</button></div>
+    <nav class="index-links" aria-label="站点索引" data-label-zh="站点索引" data-label-en="Site index"><a href="/"><span data-zh="作品目录" data-en="Work directory">作品目录</span></a><a href="/about/"><span data-zh="作品介绍" data-en="Project notes">作品介绍</span></a><a href="/about/#about"><span data-zh="关于 Lab" data-en="About Lab">关于 Lab</span></a><a href="/about/#contact"><span data-zh="联系" data-en="Contact">联系</span></a><a href="https://www.mariustang.com/spaces/">Spaces ↗</a><a href="https://www.mariustang.com"><span data-zh="主站 ↗" data-en="Ember Home ↗">主站 ↗</span></a></nav>
+    <h3><span data-zh="实验档案" data-en="Experiment archive">实验档案</span></h3><p class="index-note"><span data-zh="已上线的作品可打开体验，其他作品可定位到介绍。" data-en="Open released projects or jump to an introduction for work in progress.">已上线的作品可打开体验，其他作品可定位到介绍。</span></p><nav class="index-projects" aria-label="实验档案" data-label-zh="实验档案" data-label-en="Experiment archive"><a href="https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/" data-project-id="culturebridge">CultureBridge</a><a href="https://puzzle.mariustang.com" data-project-id="idea-puzzle">Idea Puzzle</a><a href="https://cinema.mariustang.com" data-project-id="cinema-experiment">Cinema Experiment</a><a href="https://city.mariustang.com" data-project-id="city-observation">City Observation Desk</a></nav>
   </dialog>
   <main id="main" class="wrap directory-main" tabindex="-1">
-    <header class="directory-heading"><h1>Ember <em>Lab</em><span class="title-dot">.</span></h1><p>选一件作品，直接开始。</p></header>
-    <section aria-labelledby="directory-heading"><h2 id="directory-heading" class="sr-only">作品目录</h2><div class="directory-grid"><!-- DIRECTORY --></div></section>
-    <p class="directory-return">作品在当前标签页打开；可通过作品内的返回入口或浏览器返回，回到这里换一件。</p>
+    <header class="directory-heading"><h1>Ember <em>Lab</em><span class="title-dot">.</span></h1><p><span data-zh="选一件作品，直接开始。" data-en="Pick an experiment. Start exploring.">选一件作品，直接开始。</span></p></header>
+    <section aria-labelledby="directory-heading"><h2 id="directory-heading" class="sr-only"><span data-zh="作品目录" data-en="Work directory">作品目录</span></h2><div class="directory-grid"><a class="directory-card" href="https://cinema.mariustang.com" data-project-id="cinema-experiment" aria-labelledby="directory-title-cinema-experiment" aria-describedby="directory-description-cinema-experiment"><h3 id="directory-title-cinema-experiment">Cinema Experiment</h3><p id="directory-description-cinema-experiment"><span data-zh="回答三个情境问题，找到一部适合此刻的电影。" data-en="Answer three situational questions to find a film for right now.">回答三个情境问题，找到一部适合此刻的电影。</span></p><span class="entry-arrow" aria-hidden="true">↗</span></a>
+<a class="directory-card" href="https://city.mariustang.com" data-project-id="city-observation" aria-labelledby="directory-title-city-observation" aria-describedby="directory-description-city-observation"><h3 id="directory-title-city-observation">City Observation Desk</h3><p id="directory-description-city-observation"><span data-zh="走两条示意路线，选出你更想继续逛的一条。" data-en="Walk two illustrated routes and choose which one to explore further.">走两条示意路线，选出你更想继续逛的一条。</span></p><span class="entry-arrow" aria-hidden="true">↗</span></a>
+<a class="directory-card" href="https://puzzle.mariustang.com" data-project-id="idea-puzzle" aria-labelledby="directory-title-idea-puzzle" aria-describedby="directory-description-idea-puzzle"><h3 id="directory-title-idea-puzzle">Idea Puzzle</h3><p id="directory-description-idea-puzzle"><span data-zh="写下想法、拖拽分组，再选一个作为下一步行动。" data-en="Write down ideas, drag them into groups, and choose a next step.">写下想法、拖拽分组，再选一个作为下一步行动。</span></p><span class="entry-arrow" aria-hidden="true">↗</span></a>
+<a class="directory-card" href="https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/" data-project-id="culturebridge" aria-labelledby="directory-title-culturebridge" aria-describedby="directory-description-culturebridge"><h3 id="directory-title-culturebridge">CultureBridge</h3><p id="directory-description-culturebridge"><span data-zh="创作文化短帖，核对语境，再收集读者反馈。" data-en="Draft a cultural post, review its context, and collect reader feedback.">创作文化短帖，核对语境，再收集读者反馈。</span></p><span class="entry-arrow" aria-hidden="true">↗</span></a></div></section>
+    <p class="directory-return"><span data-zh="作品在当前标签页打开；可通过作品内的返回入口或浏览器返回，回到这里换一件。" data-en="Experiments open in this tab. Use their return link or your browser’s Back button to come here and try another.">作品在当前标签页打开；可通过作品内的返回入口或浏览器返回，回到这里换一件。</span></p>
   </main>
-  <footer class="footer wrap directory-footer"><span>© <!-- YEAR --> Ember Lab</span><nav aria-label="页脚导航"><a href="/about/">作品介绍</a><a href="/about/#contact">联系</a><a href="https://www.mariustang.com">返回主站 ↗</a></nav></footer>
-</body>
+  <footer class="footer wrap directory-footer"><span>© 2026 Ember Lab</span><nav aria-label="页脚导航" data-label-zh="页脚导航" data-label-en="Footer navigation"><a href="/about/"><span data-zh="作品介绍" data-en="Project notes">作品介绍</span></a><a href="/about/#contact"><span data-zh="联系" data-en="Contact">联系</span></a><a href="https://www.mariustang.com"><span data-zh="返回主站 ↗" data-en="Back to Ember ↗">返回主站 ↗</span></a></nav></footer>
+<script src="assets/ember-lab/js-01.js"></script><script src="assets/ember-lab/js-02.js"></script></body>
 </html>

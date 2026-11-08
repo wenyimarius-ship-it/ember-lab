@@ -1,0 +1,38 @@
+[
+  {
+    "width": 1440,
+    "motion": "no-preference",
+    "homeCitiesFilmsDemo": true,
+    "spacesNavigation": true,
+    "labDetailsIndexLanguageAbout": true,
+    "consoleErrors": [],
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "motion": "reduce",
+    "homeCitiesFilmsDemo": true,
+    "spacesNavigation": true,
+    "labDetailsIndexLanguageAbout": true,
+    "consoleErrors": [],
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "motion": "no-preference",
+    "homeCitiesFilmsDemo": true,
+    "spacesNavigation": true,
+    "labDetailsIndexLanguageAbout": true,
+    "consoleErrors": [],
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "motion": "reduce",
+    "homeCitiesFilmsDemo": true,
+    "spacesNavigation": true,
+    "labDetailsIndexLanguageAbout": true,
+    "consoleErrors": [],
+    "overflow": false
+  }
+]
