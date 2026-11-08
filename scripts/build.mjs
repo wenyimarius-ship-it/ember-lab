@@ -39,36 +39,28 @@ for (const [source, destination] of templates) {
   html = localizeHTML(html, experiments);
   pages.push({ destination, html });
 }
-// Use the current Vercel deployment host, or an explicitly configured canonical origin.
-const configuredOrigin =
-  process.env.SITE_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
+const siteURL = new URL(process.env.SITE_URL || "https://lab.mariustang.com");
+if (
+  siteURL.protocol !== "https:" ||
+  siteURL.username ||
+  siteURL.password ||
+  siteURL.pathname !== "/" ||
+  siteURL.search ||
+  siteURL.hash
+) {
+  throw new Error("SITE_URL must be an HTTPS origin");
+}
+const { origin } = siteURL;
 await rm("dist", { recursive: true, force: true });
 await mkdir("dist/about", { recursive: true });
 for (const page of pages) {
-  let html = page.html;
-  if (configuredOrigin) {
-    const origin = new URL(configuredOrigin);
-    if (
-      origin.protocol !== "https:" ||
-      origin.username ||
-      origin.password ||
-      origin.pathname !== "/" ||
-      origin.search ||
-      origin.hash
-    )
-      throw new Error("SITE_URL must be an HTTPS origin");
-    const pathname = page.destination === "index.html" ? "/" : "/about/";
-    html = html
-      .replace(
-        'content="/assets/og.png"',
-        `content="${origin.origin}/assets/og.png"`,
-      )
-      .replace(
-        "</head>",
-        `  <link rel="canonical" href="${origin.origin}${pathname}">\n  <meta property="og:url" content="${origin.origin}${pathname}">\n</head>`,
-      );
-  }
+  const pathname = page.destination === "index.html" ? "/" : "/about/";
+  const html = page.html
+    .replaceAll('content="/assets/og.png"', `content="${origin}/assets/og.png"`)
+    .replace(
+      "</head>",
+      `  <link rel="canonical" href="${origin}${pathname}">\n  <meta property="og:url" content="${origin}${pathname}">\n</head>`,
+    );
   await writeFile(`dist/${page.destination}`, html);
 }
 await cp("assets", "dist/assets", { recursive: true });
