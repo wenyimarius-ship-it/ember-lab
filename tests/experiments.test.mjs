@@ -59,18 +59,21 @@ test('built HTML includes all content and metadata without needing client render
   for (const item of experiments) assert.ok(html.includes(item.title));
   assert.match(html, /property="og:image"/);
   assert.match(html, /class="skip-link"/);
-  assert.doesNotMatch(html, /href="#"|lab\.mariustang\.com/);
+  assert.doesNotMatch(html, /href="#"/);
 });
 
-test('deployment build writes canonical and absolute sharing image from deployment host', async () => {
+test('deployment build writes canonical and absolute sharing image from SITE_URL or the public origin', async () => {
   const { execFileSync } = await import('node:child_process');
-  execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: 'https://lab.example.com', VERCEL_URL: '' } });
+  execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: 'https://lab.example.com', VERCEL_URL: 'preview.vercel.app', VERCEL_PROJECT_PRODUCTION_URL: 'project.vercel.app' } });
   const html = await readFile('dist/index.html', 'utf8');
   assert.match(html, /rel="canonical" href="https:\/\/lab.example.com\/"/);
   assert.match(html, /property="og:image" content="https:\/\/lab.example.com\/assets\/og.png"/);
   const notes = await readFile('dist/about/index.html', 'utf8');
   assert.match(notes, /rel="canonical" href="https:\/\/lab.example.com\/about\/"/);
-  execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: '', VERCEL_URL: '' } });
+  execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: '', VERCEL_URL: 'preview.vercel.app', VERCEL_PROJECT_PRODUCTION_URL: 'project.vercel.app' } });
+  const defaultHTML = await readFile('dist/index.html', 'utf8');
+  assert.ok(defaultHTML.includes('rel="canonical" href="https://lab.mariustang.com/"'));
+  assert.ok(defaultHTML.includes('name="twitter:image" content="https://lab.mariustang.com/assets/og.png"'));
 });
 
 test('localization pre-renders Chinese and escapes translation text', async () => {
