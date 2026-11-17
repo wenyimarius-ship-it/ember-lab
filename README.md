@@ -4,7 +4,7 @@ Ember Lab 把独立网页实验整理成一个可直接打开的作品目录。[
 
 | 作品 | 体验 |
 | --- | --- |
-| [Cinema Experiment](https://cinema.mariustang.com/) | 回答三个情境问题，获得一部电影与推荐理由 |
+| [Cinema Experiment](https://cinema.mariustang.com/) | 回答三个关于故事的问题，获得一部电影与推荐理由 |
 | [City Observation Desk](https://city.mariustang.com/) | 试玩两条示意路线，或记录自己的路线 |
 | [Idea Puzzle](https://puzzle.mariustang.com/) | 把想法写成卡片，分组并选出下一步 |
 | [CultureBridge](https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/) | 创作文化短帖、核对语境并收集读者反馈 |
