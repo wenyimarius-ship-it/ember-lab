@@ -20,9 +20,9 @@ OUT = Path(os.environ.get('LAB_TEST_OUTPUT', '/tmp/ember-lab-directory-checks'))
 OUT.mkdir(parents=True, exist_ok=True)
 LAB = 'https://lab.mariustang.com/'
 MOUNTS = {
-    'ember-film-experiment.vercel.app': ROOT / 'cinema',
-    'ember-city-observer.vercel.app': ROOT / 'city',
-    'ember-idea-puzzle.vercel.app': ROOT / 'puzzle' / 'dist',
+    'cinema.mariustang.com': ROOT / 'cinema',
+    'city.mariustang.com': ROOT / 'city',
+    'puzzle.mariustang.com': ROOT / 'puzzle' / 'dist',
 }
 
 def source_response(route):
@@ -54,8 +54,8 @@ with sync_playwright() as p:
         page.goto(LAB)
         steps = []
         for project, hostname, selector in [
-            ('cinema-experiment', 'ember-film-experiment.vercel.app', '#lab-link'),
-            ('city-observation', 'ember-city-observer.vercel.app', 'header a'),
+            ('cinema-experiment', 'cinema.mariustang.com', '#lab-link'),
+            ('city-observation', 'city.mariustang.com', 'header a'),
         ]:
             page.locator(f'.directory-card[data-project-id="{project}"]').click()
             page.wait_for_url(f'https://{hostname}/')
@@ -68,7 +68,7 @@ with sync_playwright() as p:
             assert page.locator('.directory-card').first.bounding_box()['y'] < 400
             steps.append(f'directory → {project} → in-app return → directory')
         page.locator('.directory-card[data-project-id="idea-puzzle"]').click()
-        page.wait_for_url('https://ember-idea-puzzle.vercel.app/')
+        page.wait_for_url('https://puzzle.mariustang.com/')
         page.locator('#board').wait_for(state='visible')
         assert page.locator('a[href*="lab.mariustang.com"]').count() == 0
         page.screenshot(path=str(OUT / f'idea-puzzle-source-{width}.png'))
@@ -76,15 +76,15 @@ with sync_playwright() as p:
         page.wait_for_url(LAB)
         assert page.locator('.directory-card').first.bounding_box()['y'] < 400
         page.locator('.directory-card[data-project-id="cinema-experiment"]').click()
-        page.wait_for_url('https://ember-film-experiment.vercel.app/')
+        page.wait_for_url('https://cinema.mariustang.com/')
         page.locator('#lab-link').wait_for(state='visible')
         steps.append('directory → idea-puzzle → browser Back → directory → cinema-experiment')
         # Deeper City pages have an indirect route, not a direct Lab link.
-        page.goto('https://ember-city-observer.vercel.app/desk.html')
+        page.goto('https://city.mariustang.com/desk.html')
         page.locator('header a').click()
-        page.wait_for_url('https://ember-city-observer.vercel.app/record.html')
+        page.wait_for_url('https://city.mariustang.com/record.html')
         page.locator('header a').click()
-        page.wait_for_url('https://ember-city-observer.vercel.app/')
+        page.wait_for_url('https://city.mariustang.com/')
         page.locator('header a').click()
         page.wait_for_url(LAB)
         steps.append('city desk → record → city home → Lab directory (indirect return)')

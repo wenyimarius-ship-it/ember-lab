@@ -20,7 +20,7 @@ git push -u origin feat/ember-lab-phase-2
 4. 先使用 Vercel 分配的项目地址验证。检查根页面、favicon、OG PNG、导航、状态筛选、320px 布局、无 JS 页面与不存在路径的 404。不要给卡片补未上线的链接。
 5. 项目确认后选择实际生产分支。此过程只部署 Lab，不连接主站的 Vercel 项目，不改主站域名与重定向。
 
-SEO 的标题、描述及 OG 内容已配置。本地分享图片使用同源 `/assets/og.png`；Vercel 构建时自动读取 `VERCEL_URL` 生成当前部署的绝对 OG 图片地址、og:url 和 canonical。正式域名实际可用后，可在 Lab 项目中设置 `SITE_URL=https://lab.mariustang.com` 并重新部署来覆盖主地址。该变量不是密钥。不要在域名验证完成前设置未上线的地址。
+SEO 的标题、描述及 OG 内容已配置。首页和介绍页的 canonical、og:url 默认使用正式域名 `https://lab.mariustang.com`，og:image 使用绝对地址 `https://lab.mariustang.com/assets/og.png`，图片文件路径不变。本地及预览构建均不读取 `VERCEL_URL`，避免分享元数据指向临时部署。仍支持通过可选的 `SITE_URL` 显式覆盖 HTTPS origin；使用默认域名无需修改 Vercel 环境变量。
 
 ## 未来绑定 lab.mariustang.com（说明，未执行）
 

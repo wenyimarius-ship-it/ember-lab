@@ -8,9 +8,9 @@ BASE = os.environ.get('LAB_TEST_URL', 'http://127.0.0.1:4173').rstrip('/')
 OUT = Path(os.environ.get('LAB_TEST_OUTPUT', '/tmp/ember-lab-directory-checks'))
 OUT.mkdir(parents=True, exist_ok=True)
 TARGETS = {
-    'cinema-experiment': 'https://ember-film-experiment.vercel.app',
-    'city-observation': 'https://ember-city-observer.vercel.app',
-    'idea-puzzle': 'https://ember-idea-puzzle.vercel.app',
+    'cinema-experiment': 'https://cinema.mariustang.com',
+    'city-observation': 'https://city.mariustang.com',
+    'idea-puzzle': 'https://puzzle.mariustang.com',
     'culturebridge': 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/',
 }
 with sync_playwright() as p:

@@ -62,7 +62,7 @@ test('built HTML includes all content and metadata without needing client render
   assert.doesNotMatch(html, /href="#"|href="(?:home|lab|spaces)\.html/);
 });
 
-test('deployment build writes canonical and absolute sharing image from deployment host', async () => {
+test('deployment build supports an explicit HTTPS sharing origin override', async () => {
   const { execFileSync } = await import('node:child_process');
   execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: 'https://lab.example.com', VERCEL_URL: '' } });
   const html = await readFile('dist/index.html', 'utf8');
@@ -71,6 +71,23 @@ test('deployment build writes canonical and absolute sharing image from deployme
   const notes = await readFile('dist/about/index.html', 'utf8');
   assert.match(notes, /rel="canonical" href="https:\/\/lab.example.com\/about\/"/);
   execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: '', VERCEL_URL: '' } });
+});
+
+test('local and preview builds keep unique sharing tags on the public Lab origin', async () => {
+  const { execFileSync } = await import('node:child_process');
+  for (const previewHost of ['', 'preview.example.vercel.app']) {
+    execFileSync(process.execPath, ['scripts/build.mjs'], { env: { ...process.env, SITE_URL: '', VERCEL_URL: previewHost } });
+    for (const [file, pathname] of [['dist/index.html', '/'], ['dist/about/index.html', '/about/']]) {
+      const html = await readFile(file, 'utf8');
+      assert.ok(html.includes(`<link rel="canonical" href="https://lab.mariustang.com${pathname}">`));
+      assert.ok(html.includes(`<meta property="og:url" content="https://lab.mariustang.com${pathname}">`));
+      assert.ok(html.includes('<meta property="og:image" content="https://lab.mariustang.com/assets/og.png">'));
+      assert.equal((html.match(/rel="canonical"/g) || []).length, 1);
+      const properties = [...html.matchAll(/property="(og:[^"]+)"/g)].map(match => match[1]);
+      assert.equal(new Set(properties).size, properties.length);
+      assert.ok(!html.includes('preview.example.vercel.app'));
+    }
+  }
 });
 
 test('localization pre-renders Chinese and escapes translation text', async () => {

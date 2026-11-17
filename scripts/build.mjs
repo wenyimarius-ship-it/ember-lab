@@ -39,10 +39,8 @@ for (const [source, destination] of templates) {
   if (destination !== "index.html") html = localizeHTML(html, experiments);
   pages.push({ destination, html });
 }
-// Use the current Vercel deployment host, or an explicitly configured canonical origin.
-const configuredOrigin =
-  process.env.SITE_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
+// Keep sharing metadata on the public origin, including preview and local builds.
+const configuredOrigin = process.env.SITE_URL || "https://lab.mariustang.com";
 await rm("dist", { recursive: true, force: true });
 await mkdir("dist/about", { recursive: true });
 for (const page of pages) {
@@ -61,12 +59,16 @@ for (const page of pages) {
     const pathname = page.destination === "index.html" ? "/" : "/about/";
     html = html
       .replace(
-        'content="/assets/og.png"',
-        `content="${origin.origin}/assets/og.png"`,
+        /<meta property="og:image" content="[^"]*">/,
+        () => `<meta property="og:image" content="${origin.origin}/assets/og.png">`,
       )
       .replace(
-        "</head>",
-        `  <link rel="canonical" href="${origin.origin}${pathname}">\n  <meta property="og:url" content="${origin.origin}${pathname}">\n</head>`,
+        /<link rel="canonical" href="[^"]*">/,
+        () => `<link rel="canonical" href="${origin.origin}${pathname}">`,
+      )
+      .replace(
+        /<meta property="og:url" content="[^"]*">/,
+        () => `<meta property="og:url" content="${origin.origin}${pathname}">`,
       );
   }
   await writeFile(`dist/${page.destination}`, html);

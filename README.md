@@ -30,6 +30,6 @@ npm run build
 
 ## 部署与边界
 
-Vercel 的 `ember-lab` 项目从本仓库 `main` 部署，核对到的 Production 记录为 READY（`acc22e7`）。[vercel.json](vercel.json) 指定 `npm run build`，发布 `dist/`。无需密钥或数据库。可选 `SITE_URL` 接受纯 HTTPS origin，用于 canonical 与分享元数据。未提供时构建可使用 Vercel 提供的 `VERCEL_URL`。
+Vercel 的 `ember-lab` 项目从本仓库 `main` 部署，核对到的 Production 记录为 READY（`acc22e7`）。[vercel.json](vercel.json) 指定 `npm run build`，发布 `dist/`。无需密钥或数据库。canonical、og:url 和绝对分享图片地址默认使用 `https://lab.mariustang.com`，本地及预览构建均不读取 `VERCEL_URL`。可选 `SITE_URL` 接受纯 HTTPS origin，用于显式覆盖这些元数据。
 
 目录默认中文，英文使用 `?lang=en`，无需 Cookie。关闭 JavaScript 仍能阅读中文并打开作品。卡片在同一标签页进入外部作品，返回链接由各作品维护，或使用浏览器返回。Lab 的 Live 状态来自目录配置，跨站体验与部署版本需分别核对。
