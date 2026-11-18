@@ -51,7 +51,7 @@ test('new catalog entries render with generic artwork fallback', () => {
 test('built HTML includes all content and metadata without needing client rendering', async () => {
   await import('../scripts/build.mjs');
   const html = await readFile('dist/index.html', 'utf8');
-  assert.equal((html.match(/class="directory-card"/g) || []).length, 4);
+  assert.equal((html.match(/<section class="chapter\b/g) || []).length, 4);
   const notes = await readFile('dist/about/index.html', 'utf8');
   assert.equal((notes.match(/class="experiment-card"/g) || []).length, 4);
   assert.doesNotMatch(html, /<!-- DIRECTORY -->/);
@@ -104,7 +104,7 @@ test('CultureBridge uses the documented Streamlit URL consistently across launch
   const item = experiments.find(item => item.id === 'culturebridge');
   assert.equal(item.url, 'https://culturebridge-dwbxqchgzdremscutzk5eh.streamlit.app/');
   const html = await readFile('dist/index.html', 'utf8');
-  assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
+  assert.equal(html.split(`href="${item.url}"`).length - 1, 1);
   const notes = await readFile('dist/about/index.html', 'utf8');
   assert.equal(notes.split(`href="${item.url}"`).length - 1, 3);
   assert.doesNotMatch(html, /待接入 · 原型地址尚待验证/);
@@ -116,7 +116,7 @@ test('Idea Puzzle is live and all Lab entry points use its confirmed Production 
   assert.equal(item.status, 'live');
   assert.equal(item.url, 'https://puzzle.mariustang.com');
   const html = await readFile('dist/index.html', 'utf8');
-  assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
+  assert.equal(html.split(`href="${item.url}"`).length - 1, 1);
   assert.match(renderCard(item, 1), /status-live/);
 });
 
@@ -138,7 +138,7 @@ test('City Observation Desk is live and both entry points use its Production URL
   assert.equal(item.status, 'live');
   assert.equal(item.url, 'https://city.mariustang.com');
   const html = await readFile('dist/index.html', 'utf8');
-  assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
+  assert.equal(html.split(`href="${item.url}"`).length - 1, 1);
   assert.match(renderCard(item, 3), /status-live/);
 });
 
@@ -148,12 +148,12 @@ test('Cinema Experiment is live and card and index use its Production URL', asyn
   assert.equal(item.status, 'live');
   assert.equal(item.url, 'https://cinema.mariustang.com');
   const html = await readFile('dist/index.html', 'utf8');
-  assert.equal(html.split(`href="${item.url}"`).length - 1, 2);
+  assert.equal(html.split(`href="${item.url}"`).length - 1, 1);
   assert.match(renderCard(item, 2), /status-live/);
 });
 
 
-test('compact directory links whole cards in the current tab and separates long notes', async () => {
+test('flow homepage keeps four same-tab launch links and separate project notes', async () => {
   const html = renderDirectory(experiments);
   const order = [...html.matchAll(/data-project-id="([^"]+)"/g)].map(match => match[1]);
   assert.deepEqual(order, ['cinema-experiment', 'city-observation', 'idea-puzzle', 'culturebridge']);
@@ -162,7 +162,9 @@ test('compact directory links whole cards in the current tab and separates long 
   const output = await readFile('dist/index.html', 'utf8');
   assert.doesNotMatch(output, /featured-card|experiment-grid|href="#experiments"|href="#about"/);
   assert.match(output, /href="\/about\/"/);
-  for (const item of experiments) assert.ok(output.includes(item.entryDescription));
+  assert.equal((output.match(/class="play"/g) || []).length, 4);
+  for (const item of experiments) assert.ok(output.includes(`data-project-id="${item.id}"`));
+  assert.doesNotMatch(output, /target="_blank"/);
 });
 
 test('future unreleased works render no dead directory links', () => {
