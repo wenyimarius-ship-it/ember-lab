@@ -41,3 +41,13 @@
 - 16 项 Node 测试、四种宽度 Lab 浏览器检查通过。390/1440px 使用三独立作品实际源码快照走通返回回路，未用假页面替代应用。Cinema 未改片库、问题或推荐流程。
 - 源码显示 Cinema 和 City 首页已有 Lab 返回链接；Puzzle 没有，使用浏览器 Back；City 深层页逐级返回。CultureBridge app.py/i18n.py 未发现 Lab 返回链接，远端未能核实。
 - 所有生产域名仍被代理 CONNECT 403 阻断，未声称完成线上实际回路或实机测试。完整路径、源码 SHA、跨仓库待办和截图在 docs/navigation-review.md。
+
+
+## 2026-11-19：真实更新记录整合至代码库（待提交审阅）
+
+- 用户确认预览后要求部署进代码库。本分支 feat/lab-verified-updates 以已上线 feat/lab-flow-home 的 d50ba9e 为基线，保留主分支和生产部署，未改 DNS、Vercel 配置或访问范围。
+- 首页四段示意历史改为公开提交能核实的 11-07 入口接入、11-18 Lab 聚合页更新；Cinema 另列故事偏好文案整合。起点日期未知单独说明，未来验证不冒充已完成；作品顺序为浏览顺序。
+- 保留正式 canonical/OG、about 介绍页和 data-project-id 体验入口。Home 返回地址使用 https://home.mariustang.com/，不带私人预览链接。
+- 修改 index.html、assets/flow/app.js（仅翻译区）、assets/flow/style.css、README；新增 docs/history-provenance.md 和本轮整合说明。thread.mjs、motion.mjs、推荐／统计／保存逻辑、vercel.json 均保持原样。
+- npm test 26/26、npm run build、现有四视口浏览器套件、390/1440源码快照导航套件以及中英展开日志检查通过；无测试修改。分享标签唯一且HTTPS，head、动画、分析和部署配置未变。
+- 验证结果与待办见 docs/repository-integration-2026-11-19.md；本地Chromium视口不代表实机或线上状态验收，代码整合不代表生产已发布。

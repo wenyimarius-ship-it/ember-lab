@@ -58,3 +58,12 @@ body.paused *,body.paused *:before,body.paused *:after{animation-play-state:paus
 @media(min-width:1101px) and (max-height:540px){.progress{top:25%;gap:12px}.progress-line{bottom:45px}}
 
 .notes-link{display:inline-block;margin-top:20px;font-size:11px;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:6px}
+
+/* Verified update notes stay readable; expanded content grows naturally. */
+.story summary{font-size:.875rem;min-height:44px}
+.story-content .demo-note{font-size:.75rem;line-height:1.7;letter-spacing:0}
+.story-content .story-label{font-size:.875rem;line-height:1.6}
+.story li p,.history-pending p{font-size:1rem;line-height:1.7;color:#b6b7c5;max-width:100%;margin:8px 0 0}
+.history-source{display:inline-flex;align-items:center;min-height:44px;font-size:.875rem;line-height:1.5;color:var(--color);text-decoration:underline;text-underline-offset:4px}
+.history-pending{margin-top:18px;padding-top:14px;border-top:1px solid #45465a}
+footer p{font-size:.75rem;line-height:1.7}

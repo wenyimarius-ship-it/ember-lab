@@ -1,6 +1,6 @@
 # Ember Lab · 灵感与交互作品
 
-Ember Lab 把四个网页实验串成可滚动浏览的作品首页。[首页](https://lab.mariustang.com/)用柔和弧光连接原创抽象图案，提供具体的中文索引和体验入口；[项目介绍](https://lab.mariustang.com/about/)保留完整玩法背景。滚动时图案保持稳定，停稳后只有当前图案轻微变化。折叠的创作记录为设计示意，不代表经过核实的版本历史。
+Ember Lab 把四个网页实验串成可滚动浏览的作品首页。[首页](https://lab.mariustang.com/)用柔和弧光连接原创抽象图案，提供具体的中文索引和体验入口；[项目介绍](https://lab.mariustang.com/about/)保留完整玩法背景。滚动时图案保持稳定，停稳后只有当前图案轻微变化。折叠的更新记录列出可核实的 Lab 入口接入与首页更新，链接到公开提交；作品最初创作日期仍待补齐，后续验证另列为未完成事项。
 
 | 作品 | 体验 |
 | --- | --- |
@@ -26,6 +26,7 @@ npm run build
 - [experiments.js](experiments.js) 是作品配置，介绍页使用长描述、标签及概念视觉。新首页的短文案和体验链接在 [index.html](index.html) 与 [assets/flow/app.js](assets/flow/app.js) 中维护；现有测试核对四个体验链接与目录配置一致。保持恰好一个 `featured: true`。
 - [index.html](index.html) 和 [pages/project-notes.html](pages/project-notes.html) 是模板。[scripts/build.mjs](scripts/build.mjs) 与 [scripts/render.mjs](scripts/render.mjs) 校验配置并生成页面。
 - [assets/flow/](assets/flow/) 包含新首页的图案、弧光、动静态配合和双语交互；原有样式和脚本继续用于介绍页。[tests/](tests/) 包含构建、动效逻辑和浏览器检查。
+- [更新记录来源](docs/history-provenance.md) 维护日期口径与提交证据；接入 Lab 或聚合页更新不等于独立作品的初始开发或首次上线。
 - `live`、`existing` 项目只有配置真实 HTTPS 地址时才有外链。开发中和规划项保留介绍。构建检查重复 ID、无效状态及不安全地址。
 
 ## 部署与边界
