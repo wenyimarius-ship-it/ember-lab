@@ -20,9 +20,9 @@ OUT = Path(os.environ.get('LAB_TEST_OUTPUT', '/tmp/ember-lab-directory-checks'))
 OUT.mkdir(parents=True, exist_ok=True)
 LAB = 'https://lab.mariustang.com/'
 MOUNTS = {
-    'ember-film-experiment.vercel.app': ROOT / 'cinema',
-    'ember-city-observer.vercel.app': ROOT / 'city',
-    'ember-idea-puzzle.vercel.app': ROOT / 'puzzle' / 'dist',
+    'cinema.mariustang.com': ROOT / 'cinema',
+    'city.mariustang.com': ROOT / 'city',
+    'puzzle.mariustang.com': ROOT / 'puzzle' / 'dist',
 }
 
 def source_response(route):
@@ -54,37 +54,37 @@ with sync_playwright() as p:
         page.goto(LAB)
         steps = []
         for project, hostname, selector in [
-            ('cinema-experiment', 'ember-film-experiment.vercel.app', '#lab-link'),
-            ('city-observation', 'ember-city-observer.vercel.app', 'header a'),
+            ('cinema-experiment', 'cinema.mariustang.com', '#lab-link'),
+            ('city-observation', 'city.mariustang.com', 'header a'),
         ]:
-            page.locator(f'.directory-card[data-project-id="{project}"]').click()
+            page.locator(f'.play[data-project-id="{project}"]').click()
             page.wait_for_url(f'https://{hostname}/')
             page.locator(selector).wait_for(state='visible')
             page.screenshot(path=str(OUT / f'{project}-source-{width}.png'))
             assert page.locator(selector).get_attribute('href').rstrip('/') == LAB.rstrip('/')
             page.locator(selector).click()
             page.wait_for_url(LAB)
-            assert page.locator('.directory-card').count() == 4
-            assert page.locator('.directory-card').first.bounding_box()['y'] < 400
+            assert page.locator('.play[data-project-id]').count() == 4
+            assert page.locator('.chapter').first.bounding_box()['y'] < 400
             steps.append(f'directory → {project} → in-app return → directory')
-        page.locator('.directory-card[data-project-id="idea-puzzle"]').click()
-        page.wait_for_url('https://ember-idea-puzzle.vercel.app/')
+        page.locator('.play[data-project-id="idea-puzzle"]').click()
+        page.wait_for_url('https://puzzle.mariustang.com/')
         page.locator('#board').wait_for(state='visible')
         assert page.locator('a[href*="lab.mariustang.com"]').count() == 0
         page.screenshot(path=str(OUT / f'idea-puzzle-source-{width}.png'))
         page.go_back()
         page.wait_for_url(LAB)
-        assert page.locator('.directory-card').first.bounding_box()['y'] < 400
-        page.locator('.directory-card[data-project-id="cinema-experiment"]').click()
-        page.wait_for_url('https://ember-film-experiment.vercel.app/')
+        assert page.locator('.chapter').first.bounding_box()['y'] < 400
+        page.locator('.play[data-project-id="cinema-experiment"]').click()
+        page.wait_for_url('https://cinema.mariustang.com/')
         page.locator('#lab-link').wait_for(state='visible')
         steps.append('directory → idea-puzzle → browser Back → directory → cinema-experiment')
         # Deeper City pages have an indirect route, not a direct Lab link.
-        page.goto('https://ember-city-observer.vercel.app/desk.html')
+        page.goto('https://city.mariustang.com/desk.html')
         page.locator('header a').click()
-        page.wait_for_url('https://ember-city-observer.vercel.app/record.html')
+        page.wait_for_url('https://city.mariustang.com/record.html')
         page.locator('header a').click()
-        page.wait_for_url('https://ember-city-observer.vercel.app/')
+        page.wait_for_url('https://city.mariustang.com/')
         page.locator('header a').click()
         page.wait_for_url(LAB)
         steps.append('city desk → record → city home → Lab directory (indirect return)')
@@ -93,6 +93,6 @@ with sync_playwright() as p:
         context.close()
     browser.close()
     revisions = {name: subprocess.check_output(['git','-C',str(ROOT / name),'rev-parse','HEAD'],text=True).strip() for name in ['cinema','city','puzzle']}
-    result = {'production_test': False, 'reason': 'Environment proxy denies live origins with CONNECT 403', 'source_revisions': revisions, 'checks': checks, 'culturebridge': 'Live Streamlit server unavailable; no local server or synthetic stand-in used'}
+    result = {'production_test': False, 'reason': 'Source snapshots served locally; live origins not loaded', 'source_revisions': revisions, 'checks': checks, 'culturebridge': 'Live Streamlit not tested in this source-snapshot audit'}
     (OUT / 'source-navigation.json').write_text(json.dumps(result, indent=2))
     print(json.dumps(result, indent=2))

@@ -125,7 +125,7 @@ const pairs = [
   ["想法卡片", "Idea cards"],
   ["拖拽分组", "Drag and group"],
   ["本地保存", "Local saving"],
-  ["情境选择", "Situational choices"],
+  ["故事偏好", "Story preferences"],
   ["电影推荐", "Film recommendations"],
   ["推荐理由", "Recommendation reasons"],
   ["空间对照", "Space comparison"],
